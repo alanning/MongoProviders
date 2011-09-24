@@ -8,6 +8,8 @@ Motivation:
 
 This project was originally part of the MongoWSAT project but was split out so that users of MongoWSAT don't have to include the MongoProvider and MongoProvider.UnitTests projects in their solutions.  This also prevents issues regarding the licensing (see below).
 
+  MongoWSAT
+  https://github.com/alanning/MongoWSAT
 
 
 Running Unit Tests:
@@ -23,9 +25,8 @@ License:
 
   MongoProviders.UnitTests - GPL
 
-  Why GPL? - The MongoProviders.UnitTests project is GPL because it is a port of the Unit Tests from the MySQL Connector project which is GPL.
-     The reason the rest of this project can remain non-GPL'd is due to the FOSS exception as described here:
-     http://www.mysql.com/about/legal/licensing/foss-exception/
+  Why GPL? - The MongoProviders.UnitTests project is GPL because it is a port of the Unit Tests from the MySQL Connector project which is GPL.  The reason the rest of this project can remain non-GPL'd is due to the FOSS exception as described here:
+  http://www.mysql.com/about/legal/licensing/foss-exception/
 
 
 
@@ -42,8 +43,8 @@ References:
 
 Many projects were referenced when making this but here are some of the most relevant:
 
-	SQL Membership, Role, Profile Provider Source Code
-	http://download.microsoft.com/download/a/b/3/ab3c284b-dc9a-473d-b7e3-33bacfcc8e98/ProviderToolkitSamples.msi
+    SQL Membership, Role, Profile Provider Source Code
+    http://download.microsoft.com/download/a/b/3/ab3c284b-dc9a-473d-b7e3-33bacfcc8e98/ProviderToolkitSamples.msi
 
     SQLite Membership, Role, Profile Providers
     http://www.codeproject.com/KB/aspnet/SQLite-Providers.aspx
@@ -60,8 +61,8 @@ Many projects were referenced when making this but here are some of the most rel
     Custom Membership Provider OnValidatingPassword question
     http://forums.asp.net/t/991002.aspx/1
 
-	MySQL Connector (for Unit Tests)
-	http://dev.mysql.com/downloads/connector/net/
+    MySQL Connector (for Unit Tests)
+    http://dev.mysql.com/downloads/connector/net/
 
 
 
