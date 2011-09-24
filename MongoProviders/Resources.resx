@@ -1,0 +1,459 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Auth_rule_names_cant_contain_char" xml:space="preserve">
+    <value>Authorization rule names cannot contain the '{0}' character.</value>
+  </data>
+  <data name="Cant_connect_sql_session_database" xml:space="preserve">
+    <value>Unable to connect to session database.</value>
+  </data>
+  <data name="Cant_connect_sql_session_database_partition_resolver" xml:space="preserve">
+    <value>Unable to connect to session database. The connection string (server='{1}', database='{2}') was returned by an instance of the IPartitionResolver type '{0}'.</value>
+  </data>
+  <data name="Config_base_no_child_nodes" xml:space="preserve">
+    <value>Child nodes are not allowed.</value>
+  </data>
+  <data name="Config_base_unrecognized_attribute" xml:space="preserve">
+    <value>Unrecognized attribute '{0}'. Note that attribute names are case-sensitive.</value>
+  </data>
+  <data name="Connection_name_not_specified" xml:space="preserve">
+    <value>The attribute 'connectionStringName' is missing or empty.</value>
+  </data>
+  <data name="Connection_string_not_found" xml:space="preserve">
+    <value>The connection name '{0}' was not found in the applications configuration or the connection string is empty.</value>
+  </data>
+  <data name="DbFileName_can_not_contain_invalid_chars" xml:space="preserve">
+    <value>The database filename can not contain the following 3 characters: [ (open square brace), ] (close square brace) and ' (single quote)</value>
+  </data>
+  <data name="Empty_attribute" xml:space="preserve">
+    <value>The '{0}' attribute cannot be an empty string.</value>
+  </data>
+  <data name="Error_parsing_session_sqlConnectionString" xml:space="preserve">
+    <value>Error parsing &lt;sessionState&gt; sqlConnectionString attribute: {0}</value>
+  </data>
+  <data name="Error_parsing_sql_partition_resolver_string" xml:space="preserve">
+    <value>Error parsing the SQL connection string returned by an instance of the IPartitionResolver type '{0}': {1}</value>
+  </data>
+  <data name="Invalid_boolean_attribute" xml:space="preserve">
+    <value>The '{0}' attribute must be set to 'true' or 'false'.</value>
+  </data>
+  <data name="Invalid_max_event_details_length" xml:space="preserve">
+    <value>The value '{1}' specified for the maxEventDetailsLength attribute of the '{0}' provider is invalid. It should be between 0 and 1073741823.</value>
+  </data>
+  <data name="Invalid_provider_positive_attributes" xml:space="preserve">
+    <value>The attribute '{0}' is invalid in the configuration of the '{1}' provider. The attribute must be set to a non-negative integer.</value>
+  </data>
+  <data name="Invalid_session_state" xml:space="preserve">
+    <value>The session state information is invalid and might be corrupted.</value>
+  </data>
+  <data name="Login_failed_sql_session_database" xml:space="preserve">
+    <value>Failed to login to session state server for user '{0}'.</value>
+  </data>
+  <data name="MembershipProvider_description" xml:space="preserve">
+    <value>MongoDB membership provider</value>
+  </data>
+  <data name="Membership_AccountLockOut" xml:space="preserve">
+    <value>The user account has been locked out.</value>
+  </data>
+  <data name="Membership_Custom_Password_Validation_Failure" xml:space="preserve">
+    <value>The custom password validation failed.</value>
+  </data>
+  <data name="Membership_InvalidAnswer" xml:space="preserve">
+    <value>The password-answer supplied is invalid.</value>
+  </data>
+  <data name="Membership_InvalidEmail" xml:space="preserve">
+    <value>The E-mail supplied is invalid.</value>
+  </data>
+  <data name="Membership_InvalidPassword" xml:space="preserve">
+    <value>The password supplied is invalid.  Passwords must conform to the password strength requirements configured for the default provider.</value>
+  </data>
+  <data name="Membership_InvalidProviderUserKey" xml:space="preserve">
+    <value>The provider user key supplied is invalid.  It must be of type System.Guid.</value>
+  </data>
+  <data name="Membership_InvalidQuestion" xml:space="preserve">
+    <value>The password-question supplied is invalid.  Note that the current provider configuration requires a valid password question and answer.  As a result, a CreateUser overload that accepts question and answer parameters must also be used.</value>
+  </data>
+  <data name="Membership_more_than_one_user_with_email" xml:space="preserve">
+    <value>More than one user has the specified e-mail address.</value>
+  </data>
+  <data name="Membership_PasswordRetrieval_not_supported" xml:space="preserve">
+    <value>This Membership Provider has not been configured to support password retrieval.</value>
+  </data>
+  <data name="Membership_username_can_not_contain_percent" xml:space="preserve">
+    <value>Username can not contain the '%' symbol.</value>
+  </data>
+  <data name="Membership_UserNotFound" xml:space="preserve">
+    <value>The user was not found.</value>
+  </data>
+  <data name="Membership_WrongAnswer" xml:space="preserve">
+    <value>The password-answer supplied is incorrect.</value>
+  </data>
+  <data name="Membership_WrongPassword" xml:space="preserve">
+    <value>The password supplied is incorrect.</value>
+  </data>
+  <data name="MinRequiredNonalphanumericCharacters_can_not_be_more_than_MinRequiredPasswordLength" xml:space="preserve">
+    <value>The minRequiredNonalphanumericCharacters can not be greater than minRequiredPasswordLength.</value>
+  </data>
+  <data name="Missing_required_attribute" xml:space="preserve">
+    <value>The '{0}' attribute must be specified on the '{1}' tag.</value>
+  </data>
+  <data name="Not_configured_to_support_password_resets" xml:space="preserve">
+    <value>This provider is not configured to allow password resets. To enable password reset, set enablePasswordReset to \true\" in the configuration file."</value>
+  </data>
+  <data name="No_database_allowed_in_sqlConnectionString" xml:space="preserve">
+    <value>The sqlConnectionString attribute or the connection string it refers to cannot contain the connection options 'Database', 'Initial Catalog' or 'AttachDbFileName'. In order to allow this, allowCustomSqlDatabase attribute must be set to true and the application needs to be granted unrestricted SqlClientPermission. Please check with your administrator if the application does not have this permission.</value>
+  </data>
+  <data name="No_database_allowed_in_sql_partition_resolver_string" xml:space="preserve">
+    <value>The SQL connection string (server='{1}', database='{2}') returned by an instance of the IPartitionResolver type '{0}' cannot contain the connection options 'Database', 'Initial Catalog' or 'AttachDbFileName'. In order to allow this, allowCustomSqlDatabase attribute must be set to true and the application needs to be granted unrestricted SqlClientPermission. Please check with your administrator if the application does not have this permission.</value>
+  </data>
+  <data name="PageIndex_bad" xml:space="preserve">
+    <value>The pageIndex must be greater than or equal to zero.</value>
+  </data>
+  <data name="PageIndex_PageSize_bad" xml:space="preserve">
+    <value>The combination of pageIndex and pageSize cannot exceed the maximum value of System.Int32.</value>
+  </data>
+  <data name="PageSize_bad" xml:space="preserve">
+    <value>The pageSize must be greater than zero.</value>
+  </data>
+  <data name="Parameter_array_empty" xml:space="preserve">
+    <value>The array parameter '{0}' should not be empty.</value>
+  </data>
+  <data name="Parameter_can_not_be_empty" xml:space="preserve">
+    <value>The parameter '{0}' must not be empty.</value>
+  </data>
+  <data name="Parameter_collection_empty" xml:space="preserve">
+    <value>The collection parameter '{0}' should not be empty.</value>
+  </data>
+  <data name="Parameter_contains_invalid_characters" xml:space="preserve">
+    <value>The parameter '{0}' must not contain the following character(s) '{1}'.</value>
+  </data>
+  <data name="Parameter_duplicate_array_element" xml:space="preserve">
+    <value>The array '{0}' should not contain duplicate values.</value>
+  </data>
+  <data name="Parameter_too_long" xml:space="preserve">
+    <value>The parameter '{0}' is too long: it must not exceed {1} chars in length.</value>
+  </data>
+  <data name="Password_does_not_match_regular_expression" xml:space="preserve">
+    <value>The parameter '{0}' does not match the regular expression specified in config file.</value>
+  </data>
+  <data name="Password_need_more_non_alpha_numeric_chars" xml:space="preserve">
+    <value>Non alpha numeric characters in '{0}' needs to be greater than or equal to '{1}'.</value>
+  </data>
+  <data name="Password_too_short" xml:space="preserve">
+    <value>The length of parameter '{0}' needs to be greater or equal to '{1}'.</value>
+  </data>
+  <data name="PersonalizationAdmin_UnexpectedPersonalizationProviderReturnValue" xml:space="preserve">
+    <value>The negative value '{0}' is returned when calling provider's '{1}' method.  The method should return non-negative integer.</value>
+  </data>
+  <data name="PersonalizationProviderHelper_CannotHaveCommaInString" xml:space="preserve">
+    <value>Input parameter '{0}' cannot have comma in string value '{1}'.</value>
+  </data>
+  <data name="PersonalizationProviderHelper_Empty_Collection" xml:space="preserve">
+    <value>Input parameter '{0}' cannot be an empty collection.</value>
+  </data>
+  <data name="PersonalizationProviderHelper_Invalid_Less_Than_Parameter" xml:space="preserve">
+    <value>Input parameter '{0}' must be greater than or equal to {1}.</value>
+  </data>
+  <data name="PersonalizationProviderHelper_More_Than_One_Path" xml:space="preserve">
+    <value>Input parameter '{0}' cannot contain more than one entry when '{1}' contains some entries.</value>
+  </data>
+  <data name="PersonalizationProviderHelper_Negative_Integer" xml:space="preserve">
+    <value>The input parameter cannot be negative.</value>
+  </data>
+  <data name="PersonalizationProviderHelper_No_Usernames_Set_In_Shared_Scope" xml:space="preserve">
+    <value>Input parameter '{0}' cannot be provided when '{1}' is set to '{2}'.</value>
+  </data>
+  <data name="PersonalizationProviderHelper_Null_Entries" xml:space="preserve">
+    <value>Input parameter '{0}' cannot contain null entries.</value>
+  </data>
+  <data name="PersonalizationProviderHelper_Null_Or_Empty_String_Entries" xml:space="preserve">
+    <value>Input parameter '{0}' cannot contain null or empty string entries.</value>
+  </data>
+  <data name="PersonalizationProviderHelper_TrimmedEmptyString" xml:space="preserve">
+    <value>Input parameter '{0}' cannot be an empty string.</value>
+  </data>
+  <data name="PersonalizationProviderHelper_Trimmed_Entry_Value_Exceed_Maximum_Length" xml:space="preserve">
+    <value>Trimmed entry value '{0}' of input parameter '{1}' cannot exceed character length {2}.</value>
+  </data>
+  <data name="PersonalizationProvider_ApplicationNameExceedMaxLength" xml:space="preserve">
+    <value>The ApplicationName cannot exceed character length {0}.</value>
+  </data>
+  <data name="PersonalizationProvider_BadConnection" xml:space="preserve">
+    <value>The specified connectionStringName, '{0}', was not registered.</value>
+  </data>
+  <data name="PersonalizationProvider_CantAccess" xml:space="preserve">
+    <value>A connection could not be made by the {0} personalization provider using the specified registration.</value>
+  </data>
+  <data name="PersonalizationProvider_NoConnection" xml:space="preserve">
+    <value>The connectionStringName attribute must be specified when registering a personalization provider.</value>
+  </data>
+  <data name="PersonalizationProvider_UnknownProp" xml:space="preserve">
+    <value>Invalid attribute '{0}', specified in the '{1}' personalization provider registration.</value>
+  </data>
+  <data name="ProfileProvider_description" xml:space="preserve">
+    <value>Mongo profile provider.</value>
+  </data>
+  <data name="Property_Had_Malformed_Url" xml:space="preserve">
+    <value>The '{0}' property had a malformed URL: {1}.</value>
+  </data>
+  <data name="ProviderException" xml:space="preserve">
+    <value>An exception occurred. Please check the Event Log.</value>
+  </data>
+  <data name="Provider_application_name_too_long" xml:space="preserve">
+    <value>The application name is too long.</value>
+  </data>
+  <data name="Provider_bad_password_format" xml:space="preserve">
+    <value>Password format specified is invalid.</value>
+  </data>
+  <data name="Provider_can_not_autogenerate_machine_key_with_encrypted_or_hashed_password_format" xml:space="preserve">
+    <value>You must specify a non-autogenerated machine key to store passwords in the encrypted or hashed formats. Change the machineKey configuration to use a non-autogenerated validation and decryption key.</value>
+  </data>
+  <data name="Provider_can_not_decode_hashed_password" xml:space="preserve">
+    <value>Hashed passwords cannot be decoded.</value>
+  </data>
+  <data name="Provider_can_not_retrieve_hashed_password" xml:space="preserve">
+    <value>Configured settings are invalid: Hashed passwords cannot be retrieved. Either set the password format to different type, or set supportsPasswordRetrieval to false.</value>
+  </data>
+  <data name="Provider_Error" xml:space="preserve">
+    <value>The Provider encountered an unknown error.</value>
+  </data>
+  <data name="Provider_Not_Found" xml:space="preserve">
+    <value>Provider '{0}' was not found.</value>
+  </data>
+  <data name="Provider_role_already_exists" xml:space="preserve">
+    <value>The role '{0}' already exists.</value>
+  </data>
+  <data name="Provider_role_not_found" xml:space="preserve">
+    <value>The role '{0}' was not found.</value>
+  </data>
+  <data name="Provider_this_user_already_in_role" xml:space="preserve">
+    <value>The user '{0}' is already in role '{1}'.</value>
+  </data>
+  <data name="Provider_this_user_already_not_in_role" xml:space="preserve">
+    <value>The user '{0}' is already not in role '{1}'.</value>
+  </data>
+  <data name="Provider_this_user_not_found" xml:space="preserve">
+    <value>The user '{0}' was not found.</value>
+  </data>
+  <data name="Provider_unknown_failure" xml:space="preserve">
+    <value>Stored procedure call failed.</value>
+  </data>
+  <data name="Provider_unrecognized_attribute" xml:space="preserve">
+    <value>Attribute not recognized '{0}'</value>
+  </data>
+  <data name="Provider_unrecognized_hash_algorithm" xml:space="preserve">
+    <value>Configured settings are invalid: HashAlgorithm.Create() does not recognize the hash algorithm '{0}'</value>
+  </data>
+  <data name="Provider_user_not_found" xml:space="preserve">
+    <value>The user was not found in the database.</value>
+  </data>
+  <data name="RoleProvider_description" xml:space="preserve">
+    <value>Mongo role provider.</value>
+  </data>
+  <data name="Role_is_not_empty" xml:space="preserve">
+    <value>This role cannot be deleted because there are users present in it.</value>
+  </data>
+  <data name="SiteMapProvider_cannot_remove_root_node" xml:space="preserve">
+    <value>Root node cannot be removed from the providers, use RemoveProvider(string providerName) instead.</value>
+  </data>
+  <data name="SqlPersonalizationProvider_Description" xml:space="preserve">
+    <value>Personalization provider that stores data in a SQL Server database.</value>
+  </data>
+  <data name="StringUtil_Trimmed_String_Exceed_Maximum_Length" xml:space="preserve">
+    <value>Trimmed string value '{0}' of input parameter '{1}' cannot exceed character length {2}.</value>
+  </data>
+  <data name="Unexpected_provider_attribute" xml:space="preserve">
+    <value>The attribute '{0}' is unexpected in the configuration of the '{1}' provider.</value>
+  </data>
+  <data name="Value_must_be_boolean" xml:space="preserve">
+    <value>The value must be boolean (true or false) for property '{0}'.</value>
+  </data>
+  <data name="Value_must_be_non_negative_integer" xml:space="preserve">
+    <value>The value must be a non-negative 32-bit integer for property '{0}'.</value>
+  </data>
+  <data name="Value_must_be_positive_integer" xml:space="preserve">
+    <value>The value must be a positive 32-bit integer for property '{0}'.</value>
+  </data>
+  <data name="Value_too_big" xml:space="preserve">
+    <value>The value '{0}' can not be greater than '{1}'.</value>
+  </data>
+  <data name="XmlSiteMapProvider_cannot_add_node" xml:space="preserve">
+    <value>SiteMapNode {0} cannot be found in current provider, only nodes in the same provider can be added.</value>
+  </data>
+  <data name="XmlSiteMapProvider_Cannot_Be_Inited_Twice" xml:space="preserve">
+    <value>XmlSiteMapProvider cannot be initialized twice.</value>
+  </data>
+  <data name="XmlSiteMapProvider_cannot_find_provider" xml:space="preserve">
+    <value>Provider {0} cannot be found inside XmlSiteMapProvider {1}.</value>
+  </data>
+  <data name="XmlSiteMapProvider_cannot_remove_node" xml:space="preserve">
+    <value>SiteMapNode {0} does not exist in provider {1}, it must be removed from provider {2}.</value>
+  </data>
+  <data name="XmlSiteMapProvider_Description" xml:space="preserve">
+    <value>SiteMap provider which reads in .sitemap XML files.</value>
+  </data>
+  <data name="XmlSiteMapProvider_Error_loading_Config_file" xml:space="preserve">
+    <value>The XML sitemap config file {0} could not be loaded.  {1}</value>
+  </data>
+  <data name="XmlSiteMapProvider_FileName_already_in_use" xml:space="preserve">
+    <value>The sitemap config file {0} is already used by other nodes or providers.</value>
+  </data>
+  <data name="XmlSiteMapProvider_FileName_does_not_exist" xml:space="preserve">
+    <value>The file {0} required by XmlSiteMapProvider does not exist.</value>
+  </data>
+  <data name="XmlSiteMapProvider_Invalid_Extension" xml:space="preserve">
+    <value>The file {0} has an invalid extension, only .sitemap files are allowed in XmlSiteMapProvider.</value>
+  </data>
+  <data name="XmlSiteMapProvider_invalid_GetRootNodeCore" xml:space="preserve">
+    <value>GetRootNode is returning null from Provider {0}, this method must return a non-empty sitemap node.</value>
+  </data>
+  <data name="XmlSiteMapProvider_invalid_resource_key" xml:space="preserve">
+    <value>Resource key {0} is not valid, it must contain a valid class name and key pair. For example, $resources:'className','key'</value>
+  </data>
+  <data name="XmlSiteMapProvider_invalid_sitemapnode_returned" xml:space="preserve">
+    <value>Provider {0} must return a valid sitemap node.</value>
+  </data>
+  <data name="XmlSiteMapProvider_missing_siteMapFile" xml:space="preserve">
+    <value>The {0} attribute must be specified on the XmlSiteMapProvider.</value>
+  </data>
+  <data name="XmlSiteMapProvider_Multiple_Nodes_With_Identical_Key" xml:space="preserve">
+    <value>Multiple nodes with the same key '{0}' were found. XmlSiteMapProvider requires that sitemap nodes have unique keys.</value>
+  </data>
+  <data name="XmlSiteMapProvider_Multiple_Nodes_With_Identical_Url" xml:space="preserve">
+    <value>Multiple nodes with the same URL '{0}' were found. XmlSiteMapProvider requires that sitemap nodes have unique URLs.</value>
+  </data>
+  <data name="XmlSiteMapProvider_multiple_resource_definition" xml:space="preserve">
+    <value>Cannot have more than one resource binding on attribute '{0}'. Ensure that this attribute is not bound through an implicit expression, for example, {0}=\$resources:key\"."</value>
+  </data>
+  <data name="XmlSiteMapProvider_Not_Initialized" xml:space="preserve">
+    <value>XmlSiteMapProvider is not initialized. Call Initialize() method first.</value>
+  </data>
+  <data name="XmlSiteMapProvider_Only_One_SiteMapNode_Required_At_Top" xml:space="preserve">
+    <value>Exactly one &lt;siteMapNode&gt; element is required directly inside the &lt;siteMap&gt; element.</value>
+  </data>
+  <data name="XmlSiteMapProvider_Only_SiteMapNode_Allowed" xml:space="preserve">
+    <value>Only &lt;siteMapNode&gt; elements are allowed at this location.</value>
+  </data>
+  <data name="XmlSiteMapProvider_resourceKey_cannot_be_empty" xml:space="preserve">
+    <value>Resource key cannot be empty.</value>
+  </data>
+  <data name="XmlSiteMapProvider_Top_Element_Must_Be_SiteMap" xml:space="preserve">
+    <value>Top element must be siteMap.</value>
+  </data>
+</root>
