@@ -339,8 +339,7 @@ namespace MongoProviders
             // Initialize the abstract base class.
             base.Initialize(name, config);
 
-            _applicationName = Helper.GetConfigValue(config["applicationName"],
-                                    System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath);
+            _applicationName = config["applicationName"] ?? System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath;
             _maxInvalidPasswordAttempts = Helper.GetConfigValue(config["maxInvalidPasswordAttempts"], 5);
             _passwordAttemptWindow = Helper.GetConfigValue(config["passwordAttemptWindow"], 10);
             _minRequiredNonAlphanumericCharacters = Helper.GetConfigValue(config["minRequiredNonAlphanumericCharacters"], 1);

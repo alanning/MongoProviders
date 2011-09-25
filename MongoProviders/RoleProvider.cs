@@ -200,7 +200,7 @@ namespace MongoProviders
             base.Initialize(name, config);
 
 
-            _applicationName = Helper.GetConfigValue(config["applicationName"], System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath);
+            _applicationName = config["applicationName"] ?? System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath;
             _invalidUsernameCharacters = Helper.GetConfigValue(config["invalidUsernameCharacters"], DEFAULT_INVALID_CHARACTERS);
             _invalidRoleCharacters = Helper.GetConfigValue(config["invalidRoleCharacters"], DEFAULT_INVALID_CHARACTERS);
             _databaseName = Helper.GetConfigValue(config["databaseName"], DEFAULT_DATABASE_NAME);
