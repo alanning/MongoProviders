@@ -50,6 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MembershipProvider.cs" />
+    <Compile Include="ProfileProvider.cs" />
+    <Compile Include="QueryHelper.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

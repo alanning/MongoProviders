@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Web.Security;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace MongoProviders
 {
@@ -10,7 +12,6 @@ namespace MongoProviders
 		public Guid Id { get; set; }
 		public string Username { get; set; }
 		public string LowercaseUsername { get; set; }
-		public string ApplicationName { get; set; }
 		public string Email { get; set; }
 		public string LowercaseEmail { get; set; }
         public string DisplayName { get; set; }
@@ -41,7 +42,7 @@ namespace MongoProviders
 
 		public override string ToString()
 		{
-			return Username;
+			return Username + " <" + Email + ">";
 		}
 
     }

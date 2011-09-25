@@ -35,17 +35,17 @@ namespace MongoProviders.UnitTests
             var roleProvider = new RoleProvider();
 
             // roles
-            var colName = roleProvider.GenerateCollectionName(_applicationName, RoleProvider.DEFAULT_ROLE_COLLECTION_SUFFIX);
+            var colName = Helper.GenerateCollectionName(_applicationName, RoleProvider.DEFAULT_ROLE_COLLECTION_SUFFIX);
             _db.DropCollection(colName);
 
-            colName = roleProvider.GenerateCollectionName(_appName2, RoleProvider.DEFAULT_ROLE_COLLECTION_SUFFIX);
+            colName = Helper.GenerateCollectionName(_appName2, RoleProvider.DEFAULT_ROLE_COLLECTION_SUFFIX);
             _db.DropCollection(colName);
 
             // users
-            colName = roleProvider.GenerateCollectionName(_applicationName, MembershipProvider.DEFAULT_USER_COLLECTION_SUFFIX);
+            colName = Helper.GenerateCollectionName(_applicationName, MembershipProvider.DEFAULT_USER_COLLECTION_SUFFIX);
             _db.DropCollection(colName);
 
-            colName = roleProvider.GenerateCollectionName(_appName2, MembershipProvider.DEFAULT_USER_COLLECTION_SUFFIX);
+            colName = Helper.GenerateCollectionName(_appName2, MembershipProvider.DEFAULT_USER_COLLECTION_SUFFIX);
             _db.DropCollection(colName);
         }
 

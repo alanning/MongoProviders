@@ -87,7 +87,7 @@ namespace MongoProviders.UnitTests
             roleProvider.CreateRole("Administrator");
             string[] roles = roleProvider.GetAllRoles();
             Assert.AreEqual(1, roles.Length);
-            Assert.AreEqual("Administrator", roles[0]);
+            Assert.AreEqual("administrator", roles[0]);
 
             // now delete the role
             roleProvider.DeleteRole("Administrator", false);
@@ -183,7 +183,7 @@ namespace MongoProviders.UnitTests
             Assert.IsFalse(roleProvider.IsUserInRole("eve2", "Administrator"));
             Assert.IsTrue(roleProvider.IsUserInRole("eve2", "User"));
             Assert.AreEqual(1, roleProvider.GetRolesForUser("eve2").Length);
-            Assert.AreEqual("User", roleProvider.GetRolesForUser("eve2")[0]);
+            Assert.AreEqual("user", roleProvider.GetRolesForUser("eve2")[0]);
 
 
             // verify didn't touch other user
@@ -300,9 +300,9 @@ namespace MongoProviders.UnitTests
 
             var roles = roleProvider.GetAllRoles();
             Assert.AreEqual(3, roles.Length);
-            Assert.IsTrue(roles.Contains("Administrator"));
-            Assert.IsTrue(roles.Contains("User"));
-            Assert.IsTrue(roles.Contains("Editor"));
+            Assert.IsTrue(roles.Contains("administrator"));
+            Assert.IsTrue(roles.Contains("user"));
+            Assert.IsTrue(roles.Contains("editor"));
         }
 
         [Test]
@@ -394,7 +394,7 @@ namespace MongoProviders.UnitTests
             roleProvider.AddUsersToRoles(new string[] { "emily", "robert", "carly" },
                 new string[] { "Editor" });
 
-            var cursor = _db.GetCollection(roleProvider.UserCollectionName).Find(Query.EQ("roles", "Editor"));
+            var cursor = _db.GetCollection(roleProvider.UserCollectionName).Find(Query.EQ("roles", "editor"));
             cursor.SetFields(Fields.Include("lname").Exclude("_id"));
 
             var names = new List<string>();

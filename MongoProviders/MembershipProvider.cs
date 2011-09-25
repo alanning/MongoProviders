@@ -38,6 +38,39 @@ using FluentMongo.Linq;
 
 namespace MongoProviders
 {
+    /// <summary>
+    /// ASP.NET Membership Provider that uses MongoDB
+    /// 
+    /// Non-standard configuration attributes:
+    ///
+    ///   invalidUsernameCharacters - characters that are illegal in Usernames.  Default: ",%"
+    ///        Ex: invalidUsernameCharacters=",%&"
+    ///        Note: the percent character, "%", should generally always be illegal since it is used in the FindUsersBy*
+    ///        methods to indicate a wildcard.  This matches the behavior of the SQL Membership provider in supporting 
+    ///        basic SQL Like syntax, although only the "%" is supported (not "_" or "[]")
+    ///
+    ///   invalidEmailCharacters - characters that are illegal in Email addresses.  Default: ",%"
+    ///        Ex: invalidEmailCharacters=",!%*"
+    ///        Note: the percent character, "%", should generally always be illegal since it is used in the FindUsersBy*
+    ///        methods to indicate a wildcard.  This matches the behavior of the SQL Membership provider in supporting 
+    ///        basic SQL Like syntax, although only the "%" is supported (not "_" or "[]")
+    ///
+    ///   writeExceptionsToEventLog - boolean indicating whether database exceptions should be 
+    ///        written to the EventLog rather than returned to UI.  Default: "true"
+    ///        Ex: writeExceptionsToEventLog="false"
+    ///
+    ///   databaseName - name of the MongoDB database to connect to.  Default: "test"
+    ///        Ex: databaseName="userdb"
+    ///
+    ///   collectionSuffix - suffix of the collection to use for Membership User data.  Default: "users"
+    ///        Ex: collectionSuffix="users"
+    ///        Note: the actual collection name used will be the combination of the ApplicationName and the CollectionSuffix.
+    ///        For example, if the ApplicationName is "/", then the default Collection name will be "/users".
+    ///        This relieves us from having to include the ApplicationName in every query and also saves space in two ways:
+    ///          1. ApplicationName does not need to be stored with the User data
+    ///          2. Indexes no longer need to be composite. ie. "LowercaseUsername" rather than "ApplicationName", "LowercaseUsername"
+    ///
+    /// </summary>
     public class MembershipProvider : System.Web.Security.MembershipProvider
     {
 
@@ -78,30 +111,21 @@ namespace MongoProviders
                 return _invalidEmailCharacters;
             }
         }
-        public string DefaultCollectionName
-        {
-            get
-            {
-                return GenerateCollectionName(_applicationName, DEFAULT_USER_COLLECTION_SUFFIX);
-            }
-        }
 
-        public string GenerateCollectionName (string application, string collection)
-        {
-            if (String.IsNullOrWhiteSpace(application))
-                return collection;
-
-            if (application.EndsWith("/"))
-                return application + collection;
-            else
-                return application + "/" + collection;
-        }
 
         public string CollectionName
         {
             get
             {
                 return _collectionName;
+            }
+        }
+
+        public MongoCollection<User> Collection
+        {
+            get
+            {
+                return _db.GetCollection<User>(this.CollectionName);
             }
         }
 
@@ -114,6 +138,7 @@ namespace MongoProviders
         protected MachineKeySection _machineKey;
         protected string _databaseName;
         protected string _collectionName;
+        protected string _collectionSuffix;
         protected MongoServer _server;
         protected MongoDatabase _db;
 
@@ -121,28 +146,10 @@ namespace MongoProviders
         protected string _eventSource = DEFAULT_NAME;
         protected string _eventLog = "Application";
         protected string _exceptionMessage = Resources.ProviderException;
-        protected IQueryable<User> _users;
 
         protected bool _writeExceptionsToEventLog;
         protected string _invalidUsernameCharacters;
         protected string _invalidEmailCharacters;
-
-        /// <summary>
-        /// A IQueryable list of Users for this Application
-        /// </summary>
-        protected IQueryable<User> Users
-        {
-            get
-            {
-                if (null == _users)
-                {
-                    _users = _db.GetCollection<User>(_collectionName).AsQueryable();
-                }
-
-                return _users;
-            }
-        }
-
 
         #endregion
 
@@ -162,7 +169,6 @@ namespace MongoProviders
         protected int _minRequiredNonAlphanumericCharacters;
         protected int _minRequiredPasswordLength;
         protected string _passwordStrengthRegularExpression;
-        protected bool _usingDefaultCollectionName;
 
 		/// <summary>
 		/// The name of the application using the custom membership provider.
@@ -177,11 +183,7 @@ namespace MongoProviders
             set
             {
                 _applicationName = value;
-                if (_usingDefaultCollectionName)
-                {
-                    _collectionName = DefaultCollectionName;
-                    _users = null;  // so it will get refreshed with new collection name
-                }
+                _collectionName = Helper.GenerateCollectionName(_applicationName, _collectionSuffix);
             }
         }
 
@@ -306,7 +308,6 @@ namespace MongoProviders
 
         #region Public Methods
 
-
         /// <summary>
 		/// Initializes the provider.
 		/// </summary>
@@ -322,9 +323,6 @@ namespace MongoProviders
         /// </exception>
         public override void Initialize(string name, NameValueCollection config)
         {
-            //
-            // Initialize values from web.config.
-            //
 
             if (null == config)
                 throw new ArgumentNullException("config");
@@ -341,24 +339,23 @@ namespace MongoProviders
             // Initialize the abstract base class.
             base.Initialize(name, config);
 
-            _applicationName = GetConfigValue(config["applicationName"],
+            _applicationName = Helper.GetConfigValue(config["applicationName"],
                                     System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath);
-            _maxInvalidPasswordAttempts = GetConfigValue(config["maxInvalidPasswordAttempts"], 5);
-            _passwordAttemptWindow = GetConfigValue(config["passwordAttemptWindow"], 10);
-            _minRequiredNonAlphanumericCharacters = GetConfigValue(config["minRequiredNonAlphanumericCharacters"], 1);
-            _minRequiredPasswordLength = GetConfigValue(config["minRequiredPasswordLength"], 7);
-            _passwordStrengthRegularExpression = GetConfigValue(config["passwordStrengthRegularExpression"], "");
-            _enablePasswordReset = GetConfigValue(config["enablePasswordReset"], true);
-            _enablePasswordRetrieval = GetConfigValue(config["enablePasswordRetrieval"], false);
-            _requiresQuestionAndAnswer = GetConfigValue(config["requiresQuestionAndAnswer"], false);
-            _requiresUniqueEmail = GetConfigValue(config["requiresUniqueEmail"], true);
-            _invalidUsernameCharacters = GetConfigValue(config["invalidUsernameCharacters"], DEFAULT_INVALID_CHARACTERS);
-            _invalidEmailCharacters = GetConfigValue(config["invalidEmailCharacters"], DEFAULT_INVALID_CHARACTERS);
-            _writeExceptionsToEventLog = GetConfigValue(config["writeExceptionsToEventLog"], true);
-            _databaseName = GetConfigValue(config["databaseName"], DEFAULT_DATABASE_NAME);
-            _collectionName = GetConfigValue(config["collectionName"], DefaultCollectionName);
+            _maxInvalidPasswordAttempts = Helper.GetConfigValue(config["maxInvalidPasswordAttempts"], 5);
+            _passwordAttemptWindow = Helper.GetConfigValue(config["passwordAttemptWindow"], 10);
+            _minRequiredNonAlphanumericCharacters = Helper.GetConfigValue(config["minRequiredNonAlphanumericCharacters"], 1);
+            _minRequiredPasswordLength = Helper.GetConfigValue(config["minRequiredPasswordLength"], 7);
+            _passwordStrengthRegularExpression = Helper.GetConfigValue(config["passwordStrengthRegularExpression"], "");
+            _enablePasswordReset = Helper.GetConfigValue(config["enablePasswordReset"], true);
+            _enablePasswordRetrieval = Helper.GetConfigValue(config["enablePasswordRetrieval"], false);
+            _requiresQuestionAndAnswer = Helper.GetConfigValue(config["requiresQuestionAndAnswer"], false);
+            _requiresUniqueEmail = Helper.GetConfigValue(config["requiresUniqueEmail"], true);
+            _invalidUsernameCharacters = Helper.GetConfigValue(config["invalidUsernameCharacters"], DEFAULT_INVALID_CHARACTERS);
+            _invalidEmailCharacters = Helper.GetConfigValue(config["invalidEmailCharacters"], DEFAULT_INVALID_CHARACTERS);
+            _writeExceptionsToEventLog = Helper.GetConfigValue(config["writeExceptionsToEventLog"], true);
+            _databaseName = Helper.GetConfigValue(config["databaseName"], DEFAULT_DATABASE_NAME);
+            _collectionSuffix = Helper.GetConfigValue(config["collectionSuffix"], DEFAULT_USER_COLLECTION_SUFFIX);
 
-            _usingDefaultCollectionName = !config.AllKeys.Contains("collectionName");
 
             ValidatePwdStrengthRegularExpression();
 
@@ -424,7 +421,7 @@ namespace MongoProviders
             config.Remove("invalidUsernameCharacters"); 
             config.Remove("invalidEmailCharacters"); 
             config.Remove("databaseName");
-            config.Remove("collectionName");
+            config.Remove("collectionSuffix");
 
 			if (config.Count > 0)
 			{
@@ -451,15 +448,12 @@ namespace MongoProviders
             // Initialize MongoDB Server
             _server = MongoServer.Create(_connectionString);
             _db = _server.GetDatabase(_databaseName);
-        }
+            _collectionName = Helper.GenerateCollectionName(_applicationName, _collectionSuffix);
 
-
-        protected T GetConfigValue<T>(string configValue, T defaultValue)
-        {
-            if (String.IsNullOrEmpty(configValue))
-                return defaultValue;
-
-            return ((T)Convert.ChangeType(configValue, typeof(T)));
+            // ensure indexes
+            this.Collection.EnsureIndex(Helper.GetElementNameFor(u => u.LowercaseUsername));
+            this.Collection.EnsureIndex(Helper.GetElementNameFor(u => u.LowercaseEmail));
+        
         }
 
 
@@ -750,7 +744,6 @@ namespace MongoProviders
             user.Username = username;
             user.LowercaseUsername = username.ToLowerInvariant();
             user.DisplayName = username;
-            user.ApplicationName = ApplicationName;
             user.Email = email;
             user.LowercaseEmail = (null == email) ? null : email.ToLowerInvariant();
             user.Password = EncodePassword(password, PasswordFormat, salt);
@@ -787,15 +780,11 @@ namespace MongoProviders
 		/// </returns>
         public override bool DeleteUser(string username, bool deleteAllRelatedData)
         {
-            User user = GetUserByName(username, "DeleteUser");
-            if (null == user) return false;
+            if (String.IsNullOrWhiteSpace(username)) return false;
 
-            var users = _db.GetCollection<User>(_collectionName);
-            var query = new QueryDocument();
-            query.Add("lname", username.ToLowerInvariant());
-            query.Add("app", this.ApplicationName);
+            var query = Query.EQ(Helper.GetElementNameFor(u => u.LowercaseUsername), username.ToLowerInvariant());
 
-            var result = users.Remove(query, SafeMode.True);
+            var result = Collection.Remove(query, SafeMode.True);
             return result.Ok;
         }
 
@@ -817,7 +806,8 @@ namespace MongoProviders
 		/// </returns>
         public override MembershipUserCollection FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords)
         {
-            return FindUsersBy(FindBy.USERNAME, usernameToMatch, pageIndex, pageSize, out totalRecords);
+            var elementName = Helper.GetElementNameFor(u => u.LowercaseUsername);
+            return FindUsersBy(elementName, usernameToMatch, pageIndex, pageSize, out totalRecords);
         }
 
 
@@ -838,7 +828,8 @@ namespace MongoProviders
 		/// </returns>
         public override MembershipUserCollection FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords)
         {
-            return FindUsersBy(FindBy.EMAIL, emailToMatch, pageIndex, pageSize, out totalRecords);
+            var elementName = Helper.GetElementNameFor(u => u.LowercaseEmail);
+            return FindUsersBy(elementName, emailToMatch, pageIndex, pageSize, out totalRecords);
         }
 
 
@@ -855,7 +846,7 @@ namespace MongoProviders
         public override MembershipUserCollection GetAllUsers(int pageIndex, int pageSize, out int totalRecords)
         {
             MembershipUserCollection users = new MembershipUserCollection();
-            var matches = Users.Skip(pageIndex * pageSize)
+            var matches = Collection.AsQueryable().Skip(pageIndex * pageSize)
                             .Take(pageSize)
                             .ToList();
 
@@ -866,7 +857,7 @@ namespace MongoProviders
             }
 
             // execute second query to get total count
-            totalRecords = Users.Count();
+            totalRecords = (int)Collection.Count();
 
             matches.ForEach(u => users.Add(ToMembershipUser(u)));
 
@@ -886,7 +877,7 @@ namespace MongoProviders
             TimeSpan onlineSpan = new TimeSpan(0, Membership.UserIsOnlineTimeWindow, 0);
             DateTime compareTime = DateTime.UtcNow.Subtract(onlineSpan);
 
-            var count = Users.Where(u => u.LastActivityDate > compareTime).Count();
+            var count = Collection.AsQueryable().Where(u => u.LastActivityDate > compareTime).Count();
 
             return count;
         }
@@ -943,27 +934,26 @@ namespace MongoProviders
 		/// </returns>
         public override MembershipUser GetUser(string username, bool userIsOnline)
         {
-            if (String.IsNullOrWhiteSpace(username))
-            {
-                return null;
-            }
+            if (String.IsNullOrWhiteSpace(username)) return null;
+
             if (userIsOnline)
             {
                 // update the last-activity date
-                var users = _db.GetCollection<User>(_collectionName);
-                var query = Query.EQ("lname", username.ToLowerInvariant());
-                var update = Update.Set("actdate", DateTime.UtcNow);
+                var users = Collection;
+                var map = BsonClassMap.LookupClassMap(typeof(User));
+                var query = Query.EQ(Helper.GetElementNameFor(u => u.LowercaseUsername), username.ToLowerInvariant());
+                var update = Update.Set(Helper.GetElementNameFor(u => u.LastActivityDate), DateTime.UtcNow);
                 var result = users.FindAndModify(query, SortBy.Null, update, returnNew: true);
                 if (!result.Ok)
                 {
                     HandleDataExceptionAndThrow(new ProviderException(result.ErrorMessage), "GetUser");
                 }
-                var u = BsonSerializer.Deserialize<User>(result.ModifiedDocument);
-                return ToMembershipUser(u);
+                var user = BsonSerializer.Deserialize<User>(result.ModifiedDocument);
+                return ToMembershipUser(user);
             }
             else
             {
-                User user = Users.Where(u => u.LowercaseUsername == username.ToLowerInvariant()).FirstOrDefault();
+                User user = Collection.AsQueryable().Where(u => u.LowercaseUsername == username.ToLowerInvariant()).FirstOrDefault();
                 return ToMembershipUser(user);
             }
         }
@@ -984,20 +974,19 @@ namespace MongoProviders
             if (userIsOnline)
             {
                 // update the last-activity date
-                var users = _db.GetCollection<User>(_collectionName);
                 var query = Query.EQ("_id", (Guid)providerUserKey);
-                var update = Update.Set("actdate", DateTime.UtcNow);
-                var result = users.FindAndModify(query, SortBy.Null, update, returnNew: true);
+                var update = Update.Set(Helper.GetElementNameFor(u => u.LastActivityDate), DateTime.UtcNow);
+                var result = Collection.FindAndModify(query, SortBy.Null, update, returnNew: true);
                 if (!result.Ok)
                 {
                     HandleDataExceptionAndThrow(new ProviderException(result.ErrorMessage), "GetUser");
                 }
-                var u = BsonSerializer.Deserialize<User>(result.ModifiedDocument);
-                return ToMembershipUser(u);
+                var user = BsonSerializer.Deserialize<User>(result.ModifiedDocument);
+                return ToMembershipUser(user);
             }
             else
             {
-                User user = Users.Where(u => u.Id == (Guid)providerUserKey).FirstOrDefault();
+                User user = Collection.AsQueryable().Where(u => u.Id == (Guid)providerUserKey).FirstOrDefault();
                 return ToMembershipUser(user);
             }
         }
@@ -1014,7 +1003,7 @@ namespace MongoProviders
 			if (null == email)
 				return null;
 
-            var username = Users.Where(u => u.LowercaseEmail == email.ToLowerInvariant()).Select(u => u.Username).FirstOrDefault();
+            var username = Collection.AsQueryable().Where(u => u.LowercaseEmail == email.ToLowerInvariant()).Select(u => u.Username).FirstOrDefault();
             return username;
         }
 
@@ -1241,8 +1230,7 @@ namespace MongoProviders
             User user = null;
 
             try {
-                var users = Users;
-                user = users.AsQueryable().Where(u => u.LowercaseUsername == username.ToLowerInvariant()).SingleOrDefault();
+                user = Collection.AsQueryable().Where(u => u.LowercaseUsername == username.ToLowerInvariant()).SingleOrDefault();
             }
             catch (Exception ex) {
                 var msg = String.Format("Unable to retrieve User information for user '{0}'", username);
@@ -1253,130 +1241,16 @@ namespace MongoProviders
         }
 
 
-
-
-        protected enum FindBy
-        {
-            USERNAME,
-            EMAIL
-        }
-
         /// <summary>
-        /// Filters User list
+        /// Finds users that match the passed string.  Element name supports the use of % as a wildcard.
         /// </summary>
-        /// <param name="strToMatch">The string to match.
-        /// String may contain the standard SQL LIKE wildcard: %
-        ///   "sm%"  -> StartsWith("sm")
-        ///   "%ith" -> EndsWith("ith")
-        ///   "%mit%" -> Contains("mit")
-        /// </param>
-        /// <param name="findByType"></param>
-        /// <returns>
-        /// A <see cref="System.Linq.IQueryable{T}"/> that contains the filtered <see cref="MongoProviders.User"/> list
-        /// </returns>
-        protected IQueryable<User> FilterUsers(string strToMatch, FindBy findByType)
-        {
-            // Would prefer to do something like:
-            //     Users.Where(u => u.LowercaseUsername.Matches(usernameToMatch))
-            // ... but FluentMongo currently only supports: StartsWith, EndsWith, and Contains
-            // so stuck doing it the brute-force way
-
-            if (String.IsNullOrWhiteSpace(strToMatch)){
-                return null;
-            }
-            string wildcard = null;
-            if (strToMatch.StartsWith("%") || strToMatch.EndsWith("%")){
-                wildcard = "%";
-            }
-
-            if (null == wildcard) {
-                // do straight equality comparison
-                switch (findByType) {
-                    case FindBy.USERNAME:
-                        return Users.Where(u => u.LowercaseUsername == strToMatch.ToLowerInvariant());
-                    case FindBy.EMAIL:
-                        return Users.Where(u => u.LowercaseEmail == strToMatch.ToLowerInvariant());
-                    default:
-                        var msg = String.Format("Error while trying to find Users '{0}'. FindByType '{1}' not supported by FilterUsers method", strToMatch, findByType.ToString());
-                        throw new ProviderException(msg);
-                }
-            }
-
-
-            // string contains wildcard
-
-            var stripped = strToMatch.ToLowerInvariant();
-
-            if (stripped.StartsWith("%"))
-            {
-                stripped = stripped.Substring(1);
-            }
-            if (stripped.EndsWith("%"))
-            {
-                stripped = stripped.Substring(0, stripped.Length - 1);
-            }
-
-
-            // check for "%mit%" case
-
-            if (strToMatch.StartsWith(wildcard) && strToMatch.EndsWith(wildcard)) {
-                switch (findByType) {
-                    case FindBy.USERNAME:
-                        return Users.Where(u => u.LowercaseUsername.Contains(stripped));
-                    case FindBy.EMAIL:
-                        return Users.Where(u => u.LowercaseEmail.Contains(stripped));
-                    default:
-                        var msg = String.Format("Error while trying to find Users '{0}'. FindByType '{1}' not supported by FilterUsers method", strToMatch, findByType.ToString());
-                        throw new ProviderException(msg);
-                }
-            }
-
-            // check for "Smi%" case
-
-            if (strToMatch.EndsWith(wildcard))
-            {
-                switch (findByType) {
-                    case FindBy.USERNAME:
-                        return Users.Where(u => u.LowercaseUsername.StartsWith(stripped));
-                    case FindBy.EMAIL:
-                        return Users.Where(u => u.LowercaseEmail.StartsWith(stripped));
-                    default:
-                        var msg = String.Format("Error while trying to find Users '{0}'. FindByType '{1}' not supported by FilterUsers method", strToMatch, findByType.ToString());
-                        throw new ProviderException(msg);
-                }
-            }
-
-            // check for "%ith" case
-
-            if (strToMatch.StartsWith(wildcard))
-            {
-                switch (findByType) {
-                    case FindBy.USERNAME:
-                        return Users.Where(u => u.LowercaseUsername.EndsWith(stripped));
-                    case FindBy.EMAIL:
-                        return Users.Where(u => u.LowercaseEmail.EndsWith(stripped));
-                    default:
-                        var msg = String.Format("Error while trying to find Users '{0}'. FindByType '{1}' not supported by FilterUsers method", strToMatch, findByType.ToString());
-                        throw new ProviderException(msg);
-                }
-            }
-
-
-            // contains wildcard but not in a standard position (start or end). Treat as normal equality match.
-
-            switch (findByType) {
-                case FindBy.USERNAME:
-                    return Users.Where(u => u.LowercaseUsername == stripped);
-                case FindBy.EMAIL:
-                    return Users.Where(u => u.LowercaseEmail == stripped);
-                default:
-                    var msg = String.Format("Error while trying to find Users '{0}'. FindByType '{1}' not supported by FilterUsers method", strToMatch, findByType.ToString());
-                    throw new ProviderException(msg);
-            }
-
-        }
-
-        protected MembershipUserCollection FindUsersBy(FindBy findByType, string strToMatch, int pageIndex, int pageSize, out int totalRecords)
+        /// <param name="elementName">The name of the element as it appears in the MongoDB collection</param>
+        /// <param name="strToMatch">The string to match.  Can start and/or end with a '%' to indicate endsWith or startsWith, respectively.</param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="totalRecords"></param>
+        /// <returns></returns>
+        protected MembershipUserCollection FindUsersBy(string elementName, string strToMatch, int pageIndex, int pageSize, out int totalRecords)
         {
             MembershipUserCollection users = new MembershipUserCollection();
             if (String.IsNullOrWhiteSpace(strToMatch))
@@ -1384,26 +1258,23 @@ namespace MongoProviders
                 totalRecords = 0;
                 return users;
             }
-            var filteredUsers = FilterUsers(strToMatch, findByType);
-            var matches = filteredUsers
-                            .Skip(pageIndex * pageSize)
-                            .Take(pageSize)
-                            .ToList();
 
-            if (null == matches)
+            var query = Helper.FindQuery(strToMatch, elementName);
+            var cursor = Collection.Find(query);
+            cursor.SetSkip(pageIndex * pageSize);
+            cursor.SetLimit(pageSize);
+            
+            foreach (var user in cursor)
             {
-                totalRecords = 0;
-                return users;
+                users.Add(ToMembershipUser(user));
             }
 
             // execute second query to get total count
-            totalRecords = filteredUsers.Count();
-
-            matches.ForEach(u => users.Add(ToMembershipUser(u)));
+            totalRecords = (int)Collection.Find(query).Count();
 
             return users;
-        }
 
+        }
 
 
 
@@ -1565,7 +1436,7 @@ namespace MongoProviders
 			return false;
 		}
 
-		private string EncodePassword(string password, MembershipPasswordFormat passwordFormat, string salt)
+		protected string EncodePassword(string password, MembershipPasswordFormat passwordFormat, string salt)
 		{
 			//   Encrypts, Hashes, or leaves the password clear based on the PasswordFormat.
 			if (String.IsNullOrEmpty(password))
@@ -1604,7 +1475,7 @@ namespace MongoProviders
 			return Convert.ToBase64String(inArray);
 		}
 
-		private string UnEncodePassword(string encodedPassword, MembershipPasswordFormat passwordFormat)
+		protected string UnEncodePassword(string encodedPassword, MembershipPasswordFormat passwordFormat)
 		{
 			//   Decrypts or leaves the password clear based on the PasswordFormat.
 			string password = encodedPassword;
@@ -1679,7 +1550,7 @@ namespace MongoProviders
         {
             SafeModeResult result = null;
             try {
-                var users = _db.GetCollection<User>(_collectionName);
+                var users = Collection;
                 result = users.Save(user, SafeMode.True);
             }
             catch (Exception ex) {
@@ -1697,9 +1568,7 @@ namespace MongoProviders
 
         #endregion
 
-
     }
-
 
 
 }

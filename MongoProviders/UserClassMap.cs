@@ -18,7 +18,6 @@ namespace MongoProviders
                     cm.GetMemberMap(c => c.Username).SetElementName("uname");
                     cm.GetMemberMap(c => c.LowercaseUsername).SetElementName("lname");
                     cm.GetMemberMap(c => c.DisplayName).SetElementName("dname");
-                    cm.GetMemberMap(c => c.ApplicationName).SetElementName("app");
                     cm.GetMemberMap(c => c.Comment).SetElementName("cmnt");
                     cm.GetMemberMap(c => c.CreateDate).SetElementName("create");
                     cm.GetMemberMap(c => c.Email).SetElementName("email");

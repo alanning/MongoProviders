@@ -34,6 +34,7 @@ using System;
 using System.Linq;
 using System.Configuration.Provider;
 using MongoDB.Driver.Builders;
+using MongoDB.Bson.Serialization;
 
 namespace MongoProviders.UnitTests
 {
@@ -64,7 +65,7 @@ namespace MongoProviders.UnitTests
             Assert.AreEqual(MembershipCreateStatus.Success, status);
 
             // verify that the password format was saved
-            var user = _db.GetCollection<User>(provider.CollectionName).FindOne(Query.EQ("lname", "foo"));
+            var user = _db.GetCollection<User>(provider.CollectionName).FindOne(Query.EQ(Helper.GetElementNameFor(u => u.LowercaseUsername), "foo"));
             MembershipPasswordFormat rowFormat = user.PasswordFormat;
             Assert.AreEqual(format, rowFormat);
 
@@ -719,7 +720,7 @@ namespace MongoProviders.UnitTests
             bool worked = provider2.ValidateUser("foo", "bar!bar");
             Assert.AreEqual(false, worked);
 
-            _db.DropCollection(provider2.DefaultCollectionName);
+            _db.DropCollection(provider2.CollectionName);
         }
 
         /// <summary>
