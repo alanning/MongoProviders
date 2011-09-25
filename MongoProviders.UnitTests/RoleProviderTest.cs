@@ -33,9 +33,9 @@ using System.Linq;
 using System.Web.Security;
 using System.Collections.Specialized;
 using System.Configuration.Provider;
-using MongoProviders;
-using MongoDB.Driver.Builders;
 using System.Collections.Generic;
+using MongoDB.Driver.Builders;
+using MongoProviders;
 
 namespace MongoProviders.UnitTests
 {
