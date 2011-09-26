@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="BaseTest.cs" />
     <Compile Include="MembershipProviderTest.cs" />
+    <Compile Include="ProfileProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleProviderTest.cs" />
   </ItemGroup>

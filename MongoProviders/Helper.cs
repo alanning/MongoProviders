@@ -40,9 +40,9 @@ namespace MongoProviders
         /// <typeparam name="TProperty"></typeparam>
         /// <param name="propertyLambda"></param>
         /// <returns></returns>
-        public static string GetElementNameFor<TProperty>(Expression<Func<User, TProperty>> propertyLambda) {
+        public static string GetElementNameFor<TSource, TProperty>(Expression<Func<TSource, TProperty>> propertyLambda) {
 
-            Type type = typeof(User);
+            Type type = typeof(TSource);
         
             MemberExpression member = propertyLambda.Body as MemberExpression;
             if (member == null)
@@ -63,10 +63,26 @@ namespace MongoProviders
                     propertyLambda.ToString(),
                     type));
         
-            var map = BsonClassMap.LookupClassMap(typeof(User));
-            var elementName = map.GetMemberMap(propInfo.Name).ElementName;
+            var map = BsonClassMap.LookupClassMap(typeof(TSource));
+            if (null == map)
+            {
+                throw new ArgumentException(string.Format(
+                    "Missing BsonClassMap for type {0}",
+                    type));
+            }
+            var memberMap = map.GetMemberMap(propInfo.Name);
+            if (null == memberMap)
+            {
+                throw new ArgumentException(string.Format(
+                    "BsonClassMap for type {0} does not contain a mapping for member {1}",
+                    type, propInfo.Name));
+            }
 
-            return elementName;
+            return memberMap.ElementName;
+        }
+        public static string GetElementNameFor<TSource>(Expression<Func<TSource, object>> propertyLambda)
+        {
+            return GetElementNameFor<TSource, object>(propertyLambda);
         }
 
         public static QueryComplete FindQuery(string strToMatch, string elementName)

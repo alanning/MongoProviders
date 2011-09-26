@@ -87,47 +87,24 @@ namespace MongoProviders
 		public const int MAX_EMAIL_LENGTH = 256;
 		public const int MAX_PASSWORD_QUESTION_LENGTH = 256;
 
+        public struct MembershipElements
+        {
+            public string LowercaseUsername;
+            public string LowercaseEmail;
+            public string LastActivityDate;
+        }
+
+        public MembershipElements ElementNames { get; protected set; }
+
         //
         // If false, exceptions are thrown to the caller. If true,
         // exceptions are written to the event log.
         //
-        public bool WriteExceptionsToEventLog
-        {
-            get { return _writeExceptionsToEventLog; }
-            set { _writeExceptionsToEventLog = value; }
-        }
-
-        public string InvalidUsernameCharacters
-        {
-            get
-            {
-                return _invalidUsernameCharacters;
-            }
-        }
-        public string InvalidEmailCharacters
-        {
-            get
-            {
-                return _invalidEmailCharacters;
-            }
-        }
-
-
-        public string CollectionName
-        {
-            get
-            {
-                return _collectionName;
-            }
-        }
-
-        public MongoCollection<User> Collection
-        {
-            get
-            {
-                return _db.GetCollection<User>(this.CollectionName);
-            }
-        }
+        public bool WriteExceptionsToEventLog { get; set; }
+        public string InvalidUsernameCharacters { get; protected set; }
+        public string InvalidEmailCharacters { get; protected set; }
+        public string CollectionName { get; protected set; }
+        public MongoCollection<User> Collection { get; protected set; }
 
         #endregion
 
@@ -137,7 +114,6 @@ namespace MongoProviders
         protected string _connectionString;
         protected MachineKeySection _machineKey;
         protected string _databaseName;
-        protected string _collectionName;
         protected string _collectionSuffix;
         protected MongoServer _server;
         protected MongoDatabase _db;
@@ -146,10 +122,6 @@ namespace MongoProviders
         protected string _eventSource = DEFAULT_NAME;
         protected string _eventLog = "Application";
         protected string _exceptionMessage = Resources.ProviderException;
-
-        protected bool _writeExceptionsToEventLog;
-        protected string _invalidUsernameCharacters;
-        protected string _invalidEmailCharacters;
 
         #endregion
 
@@ -183,7 +155,8 @@ namespace MongoProviders
             set
             {
                 _applicationName = value;
-                _collectionName = Helper.GenerateCollectionName(_applicationName, _collectionSuffix);
+                CollectionName = Helper.GenerateCollectionName(_applicationName, _collectionSuffix);
+                Collection = MongoServer.Create(_connectionString).GetDatabase(_databaseName).GetCollection<User>(CollectionName);
             }
         }
 
@@ -336,8 +309,10 @@ namespace MongoProviders
                 config.Add("description", Resources.MembershipProvider_description);
             }
 
-            // Initialize the abstract base class.
             base.Initialize(name, config);
+
+
+            // get config values
 
             _applicationName = config["applicationName"] ?? System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath;
             _maxInvalidPasswordAttempts = Helper.GetConfigValue(config["maxInvalidPasswordAttempts"], 5);
@@ -349,9 +324,9 @@ namespace MongoProviders
             _enablePasswordRetrieval = Helper.GetConfigValue(config["enablePasswordRetrieval"], false);
             _requiresQuestionAndAnswer = Helper.GetConfigValue(config["requiresQuestionAndAnswer"], false);
             _requiresUniqueEmail = Helper.GetConfigValue(config["requiresUniqueEmail"], true);
-            _invalidUsernameCharacters = Helper.GetConfigValue(config["invalidUsernameCharacters"], DEFAULT_INVALID_CHARACTERS);
-            _invalidEmailCharacters = Helper.GetConfigValue(config["invalidEmailCharacters"], DEFAULT_INVALID_CHARACTERS);
-            _writeExceptionsToEventLog = Helper.GetConfigValue(config["writeExceptionsToEventLog"], true);
+            InvalidUsernameCharacters = Helper.GetConfigValue(config["invalidUsernameCharacters"], DEFAULT_INVALID_CHARACTERS);
+            InvalidEmailCharacters = Helper.GetConfigValue(config["invalidEmailCharacters"], DEFAULT_INVALID_CHARACTERS);
+            WriteExceptionsToEventLog = Helper.GetConfigValue(config["writeExceptionsToEventLog"], true);
             _databaseName = Helper.GetConfigValue(config["databaseName"], DEFAULT_DATABASE_NAME);
             _collectionSuffix = Helper.GetConfigValue(config["collectionSuffix"], DEFAULT_USER_COLLECTION_SUFFIX);
 
@@ -390,6 +365,7 @@ namespace MongoProviders
 
 
             // Initialize Connection String
+
             string temp = config["connectionStringName"];
             if (String.IsNullOrWhiteSpace(temp))
                 throw new ProviderException(Resources.Connection_name_not_specified);
@@ -402,6 +378,7 @@ namespace MongoProviders
 
 
 			// Check for invalid parameters in the config
+
 			config.Remove("connectionStringName");
 			config.Remove("enablePasswordRetrieval");
 			config.Remove("enablePasswordReset");
@@ -432,8 +409,8 @@ namespace MongoProviders
 			}
 
 
-
             // Get encryption and decryption key information from the configuration.
+
             Configuration cfg =
               WebConfigurationManager.OpenWebConfiguration(System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath);
             _machineKey = (MachineKeySection)ConfigurationManager.GetSection("system.web/machineKey");
@@ -442,16 +419,27 @@ namespace MongoProviders
                 if (PasswordFormat != MembershipPasswordFormat.Clear)
                     throw new ProviderException(Resources.Provider_can_not_autogenerate_machine_key_with_encrypted_or_hashed_password_format);
 
-            UserClassMap.Register();
 
             // Initialize MongoDB Server
-            _server = MongoServer.Create(_connectionString);
-            _db = _server.GetDatabase(_databaseName);
-            _collectionName = Helper.GenerateCollectionName(_applicationName, _collectionSuffix);
+
+            UserClassMap.Register();
+            CollectionName = Helper.GenerateCollectionName(_applicationName, _collectionSuffix);
+            Collection = MongoServer.Create(_connectionString).GetDatabase(_databaseName).GetCollection<User>(CollectionName);
+
+
+            // store element names
+
+            var names = new MembershipElements();
+            names.LowercaseUsername = Helper.GetElementNameFor<User>(p => p.LowercaseUsername);
+            names.LastActivityDate = Helper.GetElementNameFor<User, DateTime>(p => p.LastActivityDate);
+            names.LowercaseEmail = Helper.GetElementNameFor<User>(p => p.LowercaseEmail);
+            ElementNames = names;
+
 
             // ensure indexes
-            this.Collection.EnsureIndex(Helper.GetElementNameFor(u => u.LowercaseUsername));
-            this.Collection.EnsureIndex(Helper.GetElementNameFor(u => u.LowercaseEmail));
+
+            this.Collection.EnsureIndex(ElementNames.LowercaseUsername);
+            this.Collection.EnsureIndex(ElementNames.LowercaseEmail);
         
         }
 
@@ -781,7 +769,7 @@ namespace MongoProviders
         {
             if (String.IsNullOrWhiteSpace(username)) return false;
 
-            var query = Query.EQ(Helper.GetElementNameFor(u => u.LowercaseUsername), username.ToLowerInvariant());
+            var query = Query.EQ(ElementNames.LowercaseUsername, username.ToLowerInvariant());
 
             var result = Collection.Remove(query, SafeMode.True);
             return result.Ok;
@@ -805,8 +793,7 @@ namespace MongoProviders
 		/// </returns>
         public override MembershipUserCollection FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords)
         {
-            var elementName = Helper.GetElementNameFor(u => u.LowercaseUsername);
-            return FindUsersBy(elementName, usernameToMatch, pageIndex, pageSize, out totalRecords);
+            return FindUsersBy(ElementNames.LowercaseUsername, usernameToMatch, pageIndex, pageSize, out totalRecords);
         }
 
 
@@ -827,8 +814,7 @@ namespace MongoProviders
 		/// </returns>
         public override MembershipUserCollection FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords)
         {
-            var elementName = Helper.GetElementNameFor(u => u.LowercaseEmail);
-            return FindUsersBy(elementName, emailToMatch, pageIndex, pageSize, out totalRecords);
+            return FindUsersBy(ElementNames.LowercaseEmail, emailToMatch, pageIndex, pageSize, out totalRecords);
         }
 
 
@@ -940,8 +926,8 @@ namespace MongoProviders
                 // update the last-activity date
                 var users = Collection;
                 var map = BsonClassMap.LookupClassMap(typeof(User));
-                var query = Query.EQ(Helper.GetElementNameFor(u => u.LowercaseUsername), username.ToLowerInvariant());
-                var update = Update.Set(Helper.GetElementNameFor(u => u.LastActivityDate), DateTime.UtcNow);
+                var query = Query.EQ(ElementNames.LowercaseUsername, username.ToLowerInvariant());
+                var update = Update.Set(ElementNames.LastActivityDate, DateTime.UtcNow);
                 var result = users.FindAndModify(query, SortBy.Null, update, returnNew: true);
                 if (!result.Ok)
                 {
@@ -974,7 +960,7 @@ namespace MongoProviders
             {
                 // update the last-activity date
                 var query = Query.EQ("_id", (Guid)providerUserKey);
-                var update = Update.Set(Helper.GetElementNameFor(u => u.LastActivityDate), DateTime.UtcNow);
+                var update = Update.Set(ElementNames.LastActivityDate, DateTime.UtcNow);
                 var result = Collection.FindAndModify(query, SortBy.Null, update, returnNew: true);
                 if (!result.Ok)
                 {

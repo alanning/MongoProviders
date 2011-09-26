@@ -5,6 +5,10 @@ using System.Text;
 using MongoDB.Driver;
 using System.Web.Configuration;
 using System.Configuration;
+using System.Web.Security;
+using MongoDB.Bson;
+using System.Web.Profile;
+using System.Collections.Specialized;
 
 namespace MongoProviders.UnitTests
 {
@@ -14,10 +18,14 @@ namespace MongoProviders.UnitTests
         protected MongoServer _server;
         protected MongoDatabase _db;
         protected string _applicationName;
+        protected MongoCollection<User> _userCollection;
+        protected MongoCollection<BsonDocument> _roleCollection;
+        protected MongoCollection<BsonDocument> _profileCollection;
         protected const string _appName2 = "/myapp";
         protected const string Membership_missing_application_name = "App.Config system.web/membership section is missing an applicationName attribute.  This is required so all tests point to the same data collection.";
         protected const string Roles_missing_application_name = "App.Config system.web/roleManager section is missing an applicationName attribute.  This is required so all tests point to the same data collection.";
-        protected const string Roles_and_Membership_application_names_must_match = "App.Config membership and roleManager sections must use identical applicationName attribute values.  This is required so all tests point to the same data collection.";
+        protected const string Profile_missing_application_name = "App.Config system.web/profile section is missing an applicationName attribute.  This is required so all tests point to the same data collection.";
+        protected const string Application_names_must_match = "App.Config membership, roleManager, and profile sections must use identical applicationName attribute values.  This is required so that all tests point to the same data collection.";
 
         public virtual void Setup()
         {
@@ -26,6 +34,19 @@ namespace MongoProviders.UnitTests
             var connStr = "mongodb://127.0.0.1/";
             _server = MongoServer.Create(connStr);
             _db = _server.GetDatabase("test");
+
+            var mem = (MongoProviders.MembershipProvider)Membership.Provider;
+            _userCollection = mem.Collection;
+
+            var role = (MongoProviders.RoleProvider)Roles.Provider;
+            _roleCollection = role.RoleCollection;
+
+            var profile = new MongoProviders.ProfileProvider();
+            NameValueCollection config = new NameValueCollection();
+            config.Add("connectionStringName", "local");
+            config.Add("applicationName", "/");
+            profile.Initialize(null, config);
+            _profileCollection = profile.Collection;
 
             DropCollections();
         }
@@ -47,12 +68,17 @@ namespace MongoProviders.UnitTests
 
             colName = Helper.GenerateCollectionName(_appName2, MembershipProvider.DEFAULT_USER_COLLECTION_SUFFIX);
             _db.DropCollection(colName);
+
+            // profiles
+            colName = Helper.GenerateCollectionName(_applicationName, ProfileProvider.DEFAULT_PROFILE_COLLECTION_SUFFIX);
+            _db.DropCollection(colName);
         }
 
         protected void EnsureApplicationNameSpecified(out string appName)
         {
             string mem = null;
             string roles = null;
+            string profile = null;
 
             // Membership
             try
@@ -86,9 +112,25 @@ namespace MongoProviders.UnitTests
                 throw new Exception(Roles_missing_application_name);
 
 
+            // Profiles 
+            try
+            {
+                ProfileSection section = (ProfileSection)WebConfigurationManager.GetSection("system.web/profile");
+                string defaultProvider = section.DefaultProvider;
+                ProviderSettings providerSettings = section.Providers[defaultProvider];
+                profile = providerSettings.Parameters["applicationName"];
+            }
+            catch (Exception)
+            {
+                throw new Exception(Profile_missing_application_name);
+            }
+            if (null == profile)
+                throw new Exception(Profile_missing_application_name);
+
+
             // match?
-            if (roles != mem)
-                throw new Exception(Roles_and_Membership_application_names_must_match);
+            if (roles != mem || profile != mem)
+                throw new Exception(Application_names_must_match);
 
             appName = mem;
         }

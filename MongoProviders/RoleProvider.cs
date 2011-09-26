@@ -136,6 +136,14 @@ namespace MongoProviders
             }
         }
 
+        public RoleMembershipElements ElementNames { get; set; }
+
+        public struct RoleMembershipElements
+        {
+            public string LowercaseUsername;
+            public string Roles;
+        }
+
         #endregion
 
         #region Protected Properties/Fields
@@ -240,18 +248,30 @@ namespace MongoProviders
             }
 
 
-            //RoleClassMap.Register();
 
             // Initialize MongoDB Server
+            UserClassMap.Register();
             _server = MongoServer.Create(_connectionString);
             _db = _server.GetDatabase(_databaseName);
 
             _userCollectionName = Helper.GenerateCollectionName(_applicationName, _userCollectionSuffix);
             _roleCollectionName = Helper.GenerateCollectionName(_applicationName, _roleCollectionSuffix);
 
+
+            // store element names
+
+            var names = new RoleMembershipElements();
+            names.LowercaseUsername = Helper.GetElementNameFor<User>(p => p.LowercaseUsername);
+            names.Roles = Helper.GetElementNameFor<User>(p => p.Roles);
+
+            ElementNames = names;
+
+
             // ensure indexes
+
             // MongoDB automatically indexes the _id field
-            this.UserCollection.EnsureIndex(Helper.GetElementNameFor(u => u.Roles));
+            this.UserCollection.EnsureIndex(ElementNames.LowercaseUsername);
+            this.UserCollection.EnsureIndex(ElementNames.Roles);
 
         }
         
@@ -260,7 +280,6 @@ namespace MongoProviders
         {
             SecUtility.CheckArrayParameter(ref usernames, true, true, InvalidUsernameCharacters, MAX_USERNAME_LENGTH, "usernames");
             SecUtility.CheckArrayParameter(ref roleNames, true, true, InvalidRoleCharacters, MAX_ROLE_LENGTH, "roleNames");
-
 
             // ensure lowercase
             var roles = new List<string>();
@@ -289,9 +308,9 @@ namespace MongoProviders
 
             // now update all users' roles
 
-            var query = Query.In(Helper.GetElementNameFor(u => u.LowercaseUsername), new BsonArray(users.ToArray()));
+            var query = Query.In(ElementNames.LowercaseUsername, new BsonArray(users.ToArray()));
 
-            var update = Update.AddToSetEachWrapped<string>(Helper.GetElementNameFor(u => u.Roles), roles);
+            var update = Update.AddToSetEachWrapped<string>(ElementNames.Roles, roles);
 
             var result = UserCollection.Update(query, update, UpdateFlags.Multi, SafeMode.True);
             if (result.HasLastErrorMessage)
@@ -335,10 +354,10 @@ namespace MongoProviders
                 return new string[0];
             }
 
-            var username = Helper.GetElementNameFor(u => u.LowercaseUsername);
+            var username = ElementNames.LowercaseUsername;
             QueryComplete userQuery = Helper.FindQuery(usernameToMatch.ToLowerInvariant(), username);
             var query = Query.And(
-                Query.EQ(Helper.GetElementNameFor(u => u.Roles), roleName.ToLowerInvariant()),
+                Query.EQ(ElementNames.Roles, roleName.ToLowerInvariant()),
                 userQuery
                 );
             var cursor = UserCollection.FindAs<BsonDocument>(query);
@@ -412,9 +431,9 @@ namespace MongoProviders
                 users.Add(username.ToLowerInvariant());
             }
 
-            var query = Query.In(Helper.GetElementNameFor(u => u.LowercaseUsername), new BsonArray(users.ToArray()));
+            var query = Query.In(ElementNames.LowercaseUsername, new BsonArray(users.ToArray()));
 
-            var update = Update.PullAllWrapped<string>(Helper.GetElementNameFor(u => u.Roles), roles);
+            var update = Update.PullAllWrapped<string>(ElementNames.Roles, roles);
 
             var result = _db.GetCollection<User>(_userCollectionName).Update(query, update, UpdateFlags.Multi, SafeMode.True);
             if (result.HasLastErrorMessage)
@@ -432,7 +451,6 @@ namespace MongoProviders
 
 
         #endregion
-
 
 
     }

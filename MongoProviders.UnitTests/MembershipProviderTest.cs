@@ -65,7 +65,7 @@ namespace MongoProviders.UnitTests
             Assert.AreEqual(MembershipCreateStatus.Success, status);
 
             // verify that the password format was saved
-            var user = _db.GetCollection<User>(provider.CollectionName).FindOne(Query.EQ(Helper.GetElementNameFor(u => u.LowercaseUsername), "foo"));
+            var user = _db.GetCollection<User>(provider.CollectionName).FindOne(Query.EQ(provider.ElementNames.LowercaseUsername, "foo"));
             MembershipPasswordFormat rowFormat = user.PasswordFormat;
             Assert.AreEqual(format, rowFormat);
 
