@@ -391,7 +391,7 @@ namespace MongoProviders
 			config.Remove("passwordFormat");
 			config.Remove("name");
 			config.Remove("minRequiredPasswordLength");
-			config.Remove("minRequiredNonalphanumericCharacters");
+			config.Remove("minRequiredNonAlphanumericCharacters");
 			config.Remove("passwordStrengthRegularExpression");
             config.Remove("writeExceptionsToEventLog");
             config.Remove("invalidUsernameCharacters"); 
