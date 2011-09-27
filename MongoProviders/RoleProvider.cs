@@ -56,10 +56,6 @@ namespace MongoProviders
     ///        methods to indicate a wildcard.  This matches the behavior of the SQL Membership provider in supporting 
     ///        basic SQL Like syntax, although only the "%" is supported (not "_" or "[]")
     ///
-    ///   writeExceptionsToEventLog - boolean indicating whether database exceptions should be 
-    ///        written to the EventLog rather than returned to UI.  Default: "true"
-    ///        Ex: writeExceptionsToEventLog="false"
-    ///
     ///   databaseName - name of the MongoDB database to connect to.  Default: "test"
     ///        Ex: databaseName="userdb"
     ///
