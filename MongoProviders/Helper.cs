@@ -96,7 +96,8 @@ namespace MongoProviders
             // check for "%" and "%%" cases
             if ((startsWith && 1 == strToMatch.Length) ||
                 (startsWith && endsWith && 2 == strToMatch.Length)) {
-                throw new ArgumentException("strToMatch must contain at least one character other than '%'", "strToMatch");
+                // no way to return a FindAll QueryComplete so use Exists instead...
+                return Query.Exists(elementName, true);
             }
 
             // strip leading and trailing percent
