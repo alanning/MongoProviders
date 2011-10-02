@@ -426,12 +426,16 @@ namespace MongoProviders.UnitTests
             roleProvider.AddUsersToRoles(new string[] { "eve", "evelyn", "emily", "robert", "carly" },
                 new string[] { "User" });
 
-            // Exact
+            // no % (startsWith)
             var users = roleProvider.FindUsersInRole("User", "eve");
-            Assert.AreEqual(1, users.Length);
+            Assert.AreEqual(2, users.Length);
             Assert.IsTrue(users.Contains("eve"));
+            Assert.IsTrue(users.Contains("evelyn"));
 
             users = roleProvider.FindUsersInRole("User", "bob");
+            Assert.AreEqual(0, users.Length);
+
+            users = roleProvider.FindUsersInRole("User", "obert");
             Assert.AreEqual(0, users.Length);
 
             // StartsWith

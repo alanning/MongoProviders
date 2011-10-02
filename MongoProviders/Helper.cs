@@ -126,7 +126,8 @@ namespace MongoProviders
             }
             else
             {
-                return Query.EQ(elementName, strToMatch);
+                // default to "smi%" case
+                return Query.Matches(elementName, new BsonRegularExpression(string.Format("^{0}", value)));
             }
         }
 
