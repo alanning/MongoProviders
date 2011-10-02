@@ -803,5 +803,65 @@ namespace MongoProviders.UnitTests
             Assert.IsNull(username);
         }
 
+        protected class Profile : User
+        {
+            public string FirstName { get; set; }
+        }
+
+        [Test]
+        public void UserUpdateDoesNotWipeOutIgnoredFields()
+        {
+            if (!BsonClassMap.IsClassMapRegistered(typeof(Profile)))
+            {
+                BsonClassMap.RegisterClassMap<Profile>();
+            }
+
+            NameValueCollection config = new NameValueCollection();
+            config.Add("connectionStringName", "local");
+            config.Add("applicationName", _applicationName);
+            config.Add("requiresUniqueEmail", "false");
+            config.Add("passwordFormat", "Clear");
+            config.Add("enablePasswordRetrieval", "true");
+            provider.Initialize(null, config);
+            MembershipCreateStatus status;
+            Membership.CreateUser("foo", "bar!bar", "foo@bar.com", "question", "answer", true, out status);
+
+            // ensure user created correctly
+            MembershipUser user = Membership.GetUser("foo");
+            Assert.AreEqual("question", user.PasswordQuestion);
+
+
+            // save Profile over User
+            var mongoProvider = (MongoProviders.MembershipProvider)Membership.Provider;
+            var profiles = mongoProvider.Database.GetCollection<Profile>(mongoProvider.CollectionName);
+
+            var profile = profiles.FindOne(Query.EQ("lname", "foo"));
+            profile.FirstName = "Neo";
+
+            profiles.Save(profile);
+
+            // ensure profile saved correctly
+            profile = profiles.FindOne(Query.EQ("lname", "foo"));
+            Assert.AreEqual("Neo", profile.FirstName);
+            Assert.AreEqual("question", profile.PasswordQuestion);
+
+            // validate User
+            var valid = Membership.ValidateUser("foo", "bar!bar");
+            Assert.AreEqual(true, valid);
+            
+            // ensure profile fields still in database
+            profile = profiles.FindOne(Query.EQ("lname", "foo"));
+            Assert.AreEqual("Neo", profile.FirstName);
+            Assert.AreEqual("question", profile.PasswordQuestion);
+
+            // update User
+            user.ChangePassword("bar!bar","foo!foo");
+            
+            // ensure profile fields still in database
+            profile = profiles.FindOne(Query.EQ("lname", "foo"));
+            Assert.AreEqual("Neo", profile.FirstName);
+            Assert.AreEqual("question", profile.PasswordQuestion);
+        }
+
     }
 }

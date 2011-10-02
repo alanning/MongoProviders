@@ -15,6 +15,7 @@ namespace MongoProviders
                 {
                     cm.AutoMap();
                     cm.SetIgnoreExtraElements(true);
+                    cm.SetIsRootClass(true);
                     cm.GetMemberMap(c => c.Username).SetElementName("uname");
                     cm.GetMemberMap(c => c.LowercaseUsername).SetElementName("lname");
                     cm.GetMemberMap(c => c.DisplayName).SetElementName("dname");
