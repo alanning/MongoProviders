@@ -105,6 +105,7 @@ namespace MongoProviders
         public string InvalidEmailCharacters { get; protected set; }
         public string CollectionName { get; protected set; }
         public MongoCollection<User> Collection { get; protected set; }
+        public MongoDatabase Database { get; protected set; }
 
         #endregion
 
@@ -115,8 +116,6 @@ namespace MongoProviders
         protected MachineKeySection _machineKey;
         protected string _databaseName;
         protected string _collectionSuffix;
-        protected MongoServer _server;
-        protected MongoDatabase _db;
 
         protected int _newPasswordLength = 8;
         protected string _eventSource = DEFAULT_NAME;
@@ -156,7 +155,7 @@ namespace MongoProviders
             {
                 _applicationName = value;
                 CollectionName = Helper.GenerateCollectionName(_applicationName, _collectionSuffix);
-                Collection = MongoServer.Create(_connectionString).GetDatabase(_databaseName).GetCollection<User>(CollectionName);
+                Collection = Database.GetCollection<User>(CollectionName);
             }
         }
 
@@ -423,8 +422,9 @@ namespace MongoProviders
             // Initialize MongoDB Server
 
             UserClassMap.Register();
+            Database = MongoServer.Create(_connectionString).GetDatabase(_databaseName);
             CollectionName = Helper.GenerateCollectionName(_applicationName, _collectionSuffix);
-            Collection = MongoServer.Create(_connectionString).GetDatabase(_databaseName).GetCollection<User>(CollectionName);
+            Collection = Database.GetCollection<User>(CollectionName);
 
 
             // store element names
