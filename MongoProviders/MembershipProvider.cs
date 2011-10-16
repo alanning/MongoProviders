@@ -59,9 +59,6 @@ namespace MongoProviders
     ///        written to the EventLog rather than returned to UI.  Default: "true"
     ///        Ex: writeExceptionsToEventLog="false"
     ///
-    ///   databaseName - name of the MongoDB database to connect to.  Default: "test"
-    ///        Ex: databaseName="userdb"
-    ///
     ///   collectionSuffix - suffix of the collection to use for Membership User data.  Default: "users"
     ///        Ex: collectionSuffix="users"
     ///        Note: the actual collection name used will be the combination of the ApplicationName and the CollectionSuffix.
@@ -114,7 +111,6 @@ namespace MongoProviders
 
         protected string _connectionString;
         protected MachineKeySection _machineKey;
-        protected string _databaseName;
         protected string _collectionSuffix;
 
         protected int _newPasswordLength = 8;
@@ -326,7 +322,6 @@ namespace MongoProviders
             InvalidUsernameCharacters = Helper.GetConfigValue(config["invalidUsernameCharacters"], DEFAULT_INVALID_CHARACTERS);
             InvalidEmailCharacters = Helper.GetConfigValue(config["invalidEmailCharacters"], DEFAULT_INVALID_CHARACTERS);
             WriteExceptionsToEventLog = Helper.GetConfigValue(config["writeExceptionsToEventLog"], true);
-            _databaseName = Helper.GetConfigValue(config["databaseName"], DEFAULT_DATABASE_NAME);
             _collectionSuffix = Helper.GetConfigValue(config["collectionSuffix"], DEFAULT_USER_COLLECTION_SUFFIX);
 
 
@@ -395,7 +390,6 @@ namespace MongoProviders
             config.Remove("writeExceptionsToEventLog");
             config.Remove("invalidUsernameCharacters"); 
             config.Remove("invalidEmailCharacters"); 
-            config.Remove("databaseName");
             config.Remove("collectionSuffix");
 
 			if (config.Count > 0)
@@ -422,7 +416,7 @@ namespace MongoProviders
             // Initialize MongoDB Server
 
             UserClassMap.Register();
-            Database = MongoServer.Create(_connectionString).GetDatabase(_databaseName);
+            Database = MongoDatabase.Create(_connectionString);
             CollectionName = Helper.GenerateCollectionName(_applicationName, _collectionSuffix);
             Collection = Database.GetCollection<User>(CollectionName);
 

@@ -56,9 +56,6 @@ namespace MongoProviders
     ///        methods to indicate a wildcard.  This matches the behavior of the SQL Membership provider in supporting 
     ///        basic SQL Like syntax, although only the "%" is supported (not "_" or "[]")
     ///
-    ///   databaseName - name of the MongoDB database to connect to.  Default: "test"
-    ///        Ex: databaseName="userdb"
-    ///
     ///   roleCollectionSuffix - suffix of the collection to use for role data.  Default: "users"
     ///        Ex: userCollectionSuffix="users"
     ///        Note: the actual collection name used will be the combination of the ApplicationName and the roleCollectionSuffix.
@@ -146,13 +143,11 @@ namespace MongoProviders
 
         protected string _connectionString;
         protected MachineKeySection _machineKey;
-        protected string _databaseName;
         protected string _userCollectionSuffix;
         protected string _roleCollectionSuffix;
         protected string _userCollectionName;
         protected string _roleCollectionName;
 
-        protected MongoServer _server;
         protected MongoDatabase _db;
 
         protected string _applicationName;
@@ -207,7 +202,6 @@ namespace MongoProviders
             _applicationName = config["applicationName"] ?? System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath;
             _invalidUsernameCharacters = Helper.GetConfigValue(config["invalidUsernameCharacters"], DEFAULT_INVALID_CHARACTERS);
             _invalidRoleCharacters = Helper.GetConfigValue(config["invalidRoleCharacters"], DEFAULT_INVALID_CHARACTERS);
-            _databaseName = Helper.GetConfigValue(config["databaseName"], DEFAULT_DATABASE_NAME);
             _roleCollectionSuffix = Helper.GetConfigValue(config["roleCollectionSuffix"], DEFAULT_ROLE_COLLECTION_SUFFIX);
             _userCollectionSuffix = Helper.GetConfigValue(config["userCollectionSuffix"], DEFAULT_USER_COLLECTION_SUFFIX);
 
@@ -232,7 +226,6 @@ namespace MongoProviders
             config.Remove("connectionStringName");
             config.Remove("invalidUsernameCharacters"); 
             config.Remove("invalidRoleCharacters"); 
-            config.Remove("databaseName");
             config.Remove("roleCollectionSuffix");
             config.Remove("userCollectionSuffix");
 
@@ -247,9 +240,7 @@ namespace MongoProviders
 
             // Initialize MongoDB Server
             UserClassMap.Register();
-            _server = MongoServer.Create(_connectionString);
-            _db = _server.GetDatabase(_databaseName);
-
+            _db = MongoDatabase.Create(_connectionString);
             _userCollectionName = Helper.GenerateCollectionName(_applicationName, _userCollectionSuffix);
             _roleCollectionName = Helper.GenerateCollectionName(_applicationName, _roleCollectionSuffix);
 
