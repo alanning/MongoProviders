@@ -53,7 +53,7 @@ namespace MongoProviders.UnitTests
         private void CreateUserWithFormat(MembershipPasswordFormat format)
         {
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             config.Add("passwordStrengthRegularExpression", "bar.*");
             config.Add("passwordFormat", format.ToString());
@@ -146,7 +146,7 @@ namespace MongoProviders.UnitTests
         public void CreateUserWithErrors()
         {
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             config.Add("passwordStrengthRegularExpression", "bar.*");
             config.Add("passwordFormat", "Hashed");
@@ -215,7 +215,7 @@ namespace MongoProviders.UnitTests
             var invalidEmailChars = "^/`";
 
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             config.Add("passwordStrengthRegularExpression", "bar.*");
             config.Add("passwordFormat", "Hashed");
@@ -466,7 +466,7 @@ namespace MongoProviders.UnitTests
             MembershipCreateStatus status;
             provider = new MembershipProvider();
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("requiresQuestionAndAnswer", requireQA ? "true" : "false");
             config.Add("enablePasswordRetrieval", enablePasswordRetrieval ? "true" : "false");
             config.Add("passwordFormat", "clear");
@@ -512,7 +512,7 @@ namespace MongoProviders.UnitTests
         {
             MembershipCreateStatus status;
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("requiresQuestionAndAnswer", "true");
             config.Add("enablePasswordRetrieval", "true");
             config.Add("passwordFormat", "Encrypted");
@@ -522,7 +522,7 @@ namespace MongoProviders.UnitTests
 
             MongoProviders.MembershipProvider provider2 = new MongoProviders.MembershipProvider();
             NameValueCollection config2 = new NameValueCollection();
-            config2.Add("connectionStringName", "local");
+            config2.Add("connectionStringName", _connStrName);
             config2.Add("requiresQuestionAndAnswer", "true");
             config2.Add("enablePasswordRetrieval", "true");
             config2.Add("passwordFormat", "Encrypted");
@@ -617,7 +617,7 @@ namespace MongoProviders.UnitTests
         {
             MembershipCreateStatus status;
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("requiresQuestionAndAnswer", "true");
             config.Add("passwordFormat", "clear");
             config.Add("applicationName", _applicationName);
@@ -635,7 +635,7 @@ namespace MongoProviders.UnitTests
         public void MinRequiredAlpha()
         {
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             config.Add("minRequiredNonalphanumericCharacters", "3");
             provider.Initialize(null, config);
@@ -658,7 +658,7 @@ namespace MongoProviders.UnitTests
         {
             MembershipCreateStatus status;
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("requiresQuestionAndAnswer", "false");
             config.Add("enablePasswordRetrieval", "true");
             config.Add("passwordFormat", "clear");
@@ -680,7 +680,7 @@ namespace MongoProviders.UnitTests
         {
             MembershipCreateStatus status;
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("requiresQuestionAndAnswer", "false");
             config.Add("enablePasswordRetrieval", "true");
             config.Add("passwordFormat", "encrypted");
@@ -701,7 +701,7 @@ namespace MongoProviders.UnitTests
         public void CrossAppLogin()
         {
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             config.Add("passwordStrengthRegularExpression", "bar.*");
             config.Add("passwordFormat", "Clear");
@@ -711,7 +711,7 @@ namespace MongoProviders.UnitTests
 
             MongoProviders.MembershipProvider provider2 = new MongoProviders.MembershipProvider();
             NameValueCollection config2 = new NameValueCollection();
-            config2.Add("connectionStringName", "local");
+            config2.Add("connectionStringName", _connStrName);
             config2.Add("applicationName", _appName2);
             config2.Add("passwordStrengthRegularExpression", ".*");
             config2.Add("passwordFormat", "Clear");
@@ -730,7 +730,7 @@ namespace MongoProviders.UnitTests
         public void ResetPassword()
         {
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             config.Add("passwordStrengthRegularExpression", "bar.*");
             config.Add("passwordFormat", "Clear");
@@ -751,7 +751,7 @@ namespace MongoProviders.UnitTests
         public void ChangeAppName()
         {
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             config.Add("requiresUniqueEmail", "false");
             config.Add("passwordStrengthRegularExpression", "bar.*");
@@ -763,7 +763,7 @@ namespace MongoProviders.UnitTests
 
             MongoProviders.MembershipProvider provider2 = new MongoProviders.MembershipProvider();
             NameValueCollection config2 = new NameValueCollection();
-            config2.Add("connectionStringName", "local");
+            config2.Add("connectionStringName", _connStrName);
             config2.Add("applicationName", _appName2);
             config2.Add("requiresUniqueEmail", "false");
             config2.Add("passwordStrengthRegularExpression", "foo.*");
@@ -817,7 +817,7 @@ namespace MongoProviders.UnitTests
             }
 
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             config.Add("requiresUniqueEmail", "false");
             config.Add("passwordFormat", "Clear");

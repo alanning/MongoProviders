@@ -59,13 +59,13 @@ namespace MongoProviders.UnitTests
 
 			membershipProvider = new MongoProviders.MembershipProvider();
 			NameValueCollection config = new NameValueCollection();
-			config.Add("connectionStringName", "local");
+			config.Add("connectionStringName", _connStrName);
 			config.Add("applicationName", _applicationName);
 			membershipProvider.Initialize(null, config);
 
             roleProvider = new RoleProvider();
             config = new NameValueCollection();
-			config.Add("connectionStringName", "local");
+			config.Add("connectionStringName", _connStrName);
 			config.Add("applicationName", _applicationName);
 			roleProvider.Initialize(null, config);
 		}
@@ -79,7 +79,7 @@ namespace MongoProviders.UnitTests
         {
             roleProvider = new RoleProvider();
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             roleProvider.Initialize(null, config);
 
@@ -109,7 +109,7 @@ namespace MongoProviders.UnitTests
         {
             roleProvider = new RoleProvider();
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             roleProvider.Initialize(null, config);
 
@@ -140,7 +140,7 @@ namespace MongoProviders.UnitTests
         {
             roleProvider = new RoleProvider();
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             roleProvider.Initialize(null, config);
 
@@ -206,7 +206,7 @@ namespace MongoProviders.UnitTests
         {
             roleProvider = new RoleProvider();
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             roleProvider.Initialize(null, config);
 
@@ -238,7 +238,7 @@ namespace MongoProviders.UnitTests
         {
             roleProvider = new RoleProvider();
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             roleProvider.Initialize(null, config);
 
@@ -267,7 +267,7 @@ namespace MongoProviders.UnitTests
         {
             roleProvider = new RoleProvider();
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             roleProvider.Initialize(null, config);
 
@@ -289,7 +289,7 @@ namespace MongoProviders.UnitTests
         {
             roleProvider = new RoleProvider();
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             roleProvider.Initialize(null, config);
 
@@ -310,7 +310,7 @@ namespace MongoProviders.UnitTests
         {
             roleProvider = new RoleProvider();
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             roleProvider.Initialize(null, config);
 
@@ -337,7 +337,7 @@ namespace MongoProviders.UnitTests
         {
             var provider = new MongoProviders.MembershipProvider();
             NameValueCollection config1 = new NameValueCollection();
-            config1.Add("connectionStringName", "local");
+            config1.Add("connectionStringName", _connStrName);
             config1.Add("applicationName", _applicationName);
             config1.Add("passwordStrengthRegularExpression", "bar.*");
             config1.Add("passwordFormat", "Clear");
@@ -347,7 +347,7 @@ namespace MongoProviders.UnitTests
 
             var provider2 = new MongoProviders.MembershipProvider();
             NameValueCollection config2 = new NameValueCollection();
-            config2.Add("connectionStringName", "local");
+            config2.Add("connectionStringName", _connStrName);
             config2.Add("applicationName", _appName2);
             config2.Add("passwordStrengthRegularExpression", ".*");
             config2.Add("passwordFormat", "Clear");
@@ -355,13 +355,13 @@ namespace MongoProviders.UnitTests
 
             roleProvider = new RoleProvider();
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             roleProvider.Initialize(null, config);
 
             MongoProviders.RoleProvider r2 = new MongoProviders.RoleProvider();
             NameValueCollection configr2 = new NameValueCollection();
-            configr2.Add("connectionStringName", "local");
+            configr2.Add("connectionStringName", _connStrName);
             configr2.Add("applicationName", _appName2);
             r2.Initialize(null, configr2);
 
@@ -377,7 +377,7 @@ namespace MongoProviders.UnitTests
         {
             roleProvider = new RoleProvider();
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             roleProvider.Initialize(null, config);
 
@@ -412,7 +412,7 @@ namespace MongoProviders.UnitTests
         {
             roleProvider = new RoleProvider();
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             roleProvider.Initialize(null, config);
 
@@ -474,7 +474,7 @@ namespace MongoProviders.UnitTests
         {
             roleProvider = new RoleProvider();
             NameValueCollection config = new NameValueCollection();
-            config.Add("connectionStringName", "local");
+            config.Add("connectionStringName", _connStrName);
             config.Add("applicationName", _applicationName);
             roleProvider.Initialize(null, config);
 

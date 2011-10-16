@@ -15,8 +15,8 @@ namespace MongoProviders.UnitTests
     public class BaseTest
     {
 
-        protected MongoServer _server;
         protected MongoDatabase _db;
+        protected string _connStrName;
         protected string _applicationName;
         protected MongoCollection<User> _userCollection;
         protected MongoCollection<BsonDocument> _roleCollection;
@@ -29,11 +29,17 @@ namespace MongoProviders.UnitTests
         {
             EnsureApplicationNameSpecified(out _applicationName);
 
-            var connStr = "mongodb://127.0.0.1/";
-            _server = MongoServer.Create(connStr);
-            _db = _server.GetDatabase("test");
+            try
+            {
+                _connStrName = ConfigurationManager.ConnectionStrings[0].Name;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Missing connection string in App.config");
+            }
 
             var mem = (MongoProviders.MembershipProvider)Membership.Provider;
+            _db = mem.Database;
             _userCollection = mem.Collection;
 
             var role = (MongoProviders.RoleProvider)Roles.Provider;
