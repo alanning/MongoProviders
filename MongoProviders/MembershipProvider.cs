@@ -507,12 +507,10 @@ namespace MongoProviders
 
             // Save new password
 
-            var newSalt = GenerateSalt();
-			string encodedPwd = EncodePassword(newPassword, PasswordFormat, newSalt);
+			string encodedPwd = EncodePassword(newPassword, PasswordFormat, user.PasswordSalt);
 
             user.Password = encodedPwd;
             user.PasswordFormat = PasswordFormat;
-            user.PasswordSalt = newSalt;
             user.LastPasswordChangedDate = DateTime.UtcNow;
 
             var msg = String.Format("Unable to save new password for user '{0}'", username);
@@ -1045,7 +1043,7 @@ namespace MongoProviders
                 else
                     throw new MembershipPasswordException(Resources.Membership_Custom_Password_Validation_Failure);
 
-            user.Password = newPassword;
+            user.Password = EncodePassword(newPassword, user.PasswordFormat, user.PasswordSalt);
             user.LastPasswordChangedDate = DateTime.UtcNow;
 
             {

@@ -727,7 +727,7 @@ namespace MongoProviders.UnitTests
         /// MySQL Bug #41408	PasswordReset not possible when requiresQuestionAndAnswer="false"
         /// </summary>
         [Test]
-        public void ResetPassword()
+        public void ResetPasswordWorksWhenRequiresQuestionAndAnswerIsFalse()
         {
             NameValueCollection config = new NameValueCollection();
             config.Add("connectionStringName", _connStrName);
@@ -742,6 +742,27 @@ namespace MongoProviders.UnitTests
 
             MembershipUser u = provider.GetUser("foo", false);
             string newpw = provider.ResetPassword("foo", null);
+        }
+
+        [Test]
+        public void CanResetPasswordForHashedAndSaltedPasswords()
+        {
+            NameValueCollection config = new NameValueCollection();
+            config.Add("connectionStringName", _connStrName);
+            config.Add("applicationName", _applicationName);
+            //config.Add("passwordStrengthRegularExpression", "bar.*");
+            config.Add("passwordFormat", "Hashed");
+            config.Add("requiresQuestionAndAnswer", "false");
+            provider.Initialize(null, config);
+
+            MembershipCreateStatus status;
+            provider.CreateUser("foo", "bar!bar", "foo@bar.com", null, null, true, null, out status);
+
+            MembershipUser u = provider.GetUser("foo", false);
+            string newpw = provider.ResetPassword("foo", null);
+
+            var result = provider.ValidateUser("foo", newpw);
+            Assert.AreEqual(true, result);
         }
 
         /// <summary>
