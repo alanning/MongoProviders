@@ -29,7 +29,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
-using FluentMongo.Linq;
+using MongoDB.Driver.Linq;
 
 namespace MongoProviders
 {
@@ -323,7 +323,7 @@ namespace MongoProviders
         {
             SecUtility.CheckParameter(ref roleName, true, true, InvalidRoleCharacters, MAX_ROLE_LENGTH, "roleName");
 
-            var rolePopulated = UserCollection.AsQueryable().Where(u => u.Roles.Contains(roleName.ToLowerInvariant())).Any();
+            var rolePopulated = UserCollection.AsQueryable().Any(u => u.Roles.Contains(roleName.ToLowerInvariant()));
             if (throwOnPopulatedRole && rolePopulated)
             {
                 throw new ProviderException(Resources.Role_is_not_empty);
