@@ -34,7 +34,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
-using FluentMongo.Linq;
+using MongoDB.Driver.Linq;
 
 namespace MongoProviders
 {
