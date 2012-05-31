@@ -45,3 +45,6 @@ _ReSharper*/
 # Office Temp Files
 ~$*
 
+#NCrunch files (continuous testing)
+*crunchsolution*
+*crunchproject*
