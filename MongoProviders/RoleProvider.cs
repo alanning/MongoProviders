@@ -342,7 +342,7 @@ namespace MongoProviders
             }
 
             var username = ElementNames.LowercaseUsername;
-            QueryComplete userQuery = Helper.FindQuery(usernameToMatch.ToLowerInvariant(), username);
+            var userQuery = Helper.FindQuery(usernameToMatch.ToLowerInvariant(), username);
             var query = Query.And(
                 Query.EQ(ElementNames.Roles, roleName.ToLowerInvariant()),
                 userQuery

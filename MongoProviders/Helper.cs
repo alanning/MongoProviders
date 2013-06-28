@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using System.Text.RegularExpressions;
 using MongoDB.Bson;
@@ -85,7 +86,7 @@ namespace MongoProviders
             return GetElementNameFor<TSource, object>(propertyLambda);
         }
 
-        public static QueryComplete FindQuery(string strToMatch, string elementName)
+        public static IMongoQuery FindQuery(string strToMatch, string elementName)
         {
             if (String.IsNullOrWhiteSpace(strToMatch))
                 throw new ArgumentException("strToMatch can not be empty", "strToMatch");
@@ -97,7 +98,7 @@ namespace MongoProviders
             if ((startsWith && 1 == strToMatch.Length) ||
                 (startsWith && endsWith && 2 == strToMatch.Length)) {
                 // no way to return a FindAll QueryComplete so use Exists instead...
-                return Query.Exists(elementName, true);
+                return Query.Exists(elementName);
             }
 
             // strip leading and trailing percent
