@@ -75,10 +75,16 @@ namespace MongoProviders
         public const string DEFAULT_NAME = "MongoRoleProvider";
         public const string DEFAULT_DATABASE_NAME = "test";
         public const string DEFAULT_ROLE_COLLECTION_SUFFIX = "roles";
-        public const string DEFAULT_USER_COLLECTION_SUFFIX = MongoProviders.MembershipProvider.DEFAULT_USER_COLLECTION_SUFFIX;
+        public const string DEFAULT_USER_COLLECTION_SUFFIX = MembershipProvider.DEFAULT_USER_COLLECTION_SUFFIX;
         public const string DEFAULT_INVALID_CHARACTERS = ",%";
 		public const int MAX_USERNAME_LENGTH = 256;
 		public const int MAX_ROLE_LENGTH = 256;
+
+        private const string DOCUMENT_ID_NAME = "_id";
+        private const string ROLE_NAMES = "roleNames";
+        private const string ROLE_NAME = "roleName";
+        private const string USER_NAMES = "usernames";
+        private const string USER_NAME = "username";
 
         public string RoleCollectionName
         {
@@ -99,7 +105,7 @@ namespace MongoProviders
         {
             get
             {
-                return _db.GetCollection(_roleCollectionName);
+                return Database.GetCollection(_roleCollectionName);
             }
         }
 
@@ -107,7 +113,7 @@ namespace MongoProviders
         {
             get
             {
-                return _db.GetCollection<User>(_userCollectionName);
+                return Database.GetCollection<User>(_userCollectionName);
             }
         }
 
@@ -124,8 +130,8 @@ namespace MongoProviders
             set
             {
                 _applicationName = value;
-                _roleCollectionName = Helper.GenerateCollectionName(_applicationName, _roleCollectionSuffix);
-                _userCollectionName = Helper.GenerateCollectionName(_applicationName, _userCollectionSuffix);
+                _roleCollectionName = Helper.GenerateCollectionName(_applicationName, RoleCollectionSuffix);
+                _userCollectionName = Helper.GenerateCollectionName(_applicationName, UserCollectionSuffix);
             }
         }
 
@@ -141,14 +147,14 @@ namespace MongoProviders
 
         #region Protected Properties/Fields
 
-        protected string _connectionString;
-        protected MachineKeySection _machineKey;
-        protected string _userCollectionSuffix;
-        protected string _roleCollectionSuffix;
+        protected string ConnectionString;
+        protected MachineKeySection MachineKey;
+        protected string UserCollectionSuffix;
+        protected string RoleCollectionSuffix;
         protected string _userCollectionName;
         protected string _roleCollectionName;
 
-        protected MongoDatabase _db;
+        protected MongoDatabase Database;
 
         protected string _applicationName;
         protected string _invalidUsernameCharacters;
@@ -175,7 +181,7 @@ namespace MongoProviders
             get
             {
                 var docs = RoleCollection.FindAll();
-                var ids = docs.Select(d => d["_id"].AsString);
+                var ids = docs.Select(d => d[DOCUMENT_ID_NAME].AsString);
                 return ids;
             }
         }
@@ -202,22 +208,23 @@ namespace MongoProviders
             _applicationName = config["applicationName"] ?? System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath;
             _invalidUsernameCharacters = Helper.GetConfigValue(config["invalidUsernameCharacters"], DEFAULT_INVALID_CHARACTERS);
             _invalidRoleCharacters = Helper.GetConfigValue(config["invalidRoleCharacters"], DEFAULT_INVALID_CHARACTERS);
-            _roleCollectionSuffix = Helper.GetConfigValue(config["roleCollectionSuffix"], DEFAULT_ROLE_COLLECTION_SUFFIX);
-            _userCollectionSuffix = Helper.GetConfigValue(config["userCollectionSuffix"], DEFAULT_USER_COLLECTION_SUFFIX);
+            RoleCollectionSuffix = Helper.GetConfigValue(config["roleCollectionSuffix"], DEFAULT_ROLE_COLLECTION_SUFFIX);
+            UserCollectionSuffix = Helper.GetConfigValue(config["userCollectionSuffix"], DEFAULT_USER_COLLECTION_SUFFIX);
 
 
 
             // Initialize Connection String
 
-            string temp = config["connectionStringName"];
+            var temp = config["connectionStringName"];
+
             if (String.IsNullOrWhiteSpace(temp))
                 throw new ProviderException(Resources.Connection_name_not_specified);
 
-            ConnectionStringSettings ConnectionStringSettings = ConfigurationManager.ConnectionStrings[temp];
-            if (null == ConnectionStringSettings || String.IsNullOrWhiteSpace(ConnectionStringSettings.ConnectionString))
+            var connectionStringSettings = ConfigurationManager.ConnectionStrings[temp];
+            if (null == connectionStringSettings || String.IsNullOrWhiteSpace(connectionStringSettings.ConnectionString))
                 throw new ProviderException(String.Format(Resources.Connection_string_not_found, temp));
 
-			_connectionString = ConnectionStringSettings.ConnectionString;
+			ConnectionString = connectionStringSettings.ConnectionString;
 
 
             // Check for unrecognized config values
@@ -231,25 +238,25 @@ namespace MongoProviders
 
             if (config.Count > 0)
             {
-                string key = config.GetKey(0);
+                var key = config.GetKey(0);
+
                 if (!String.IsNullOrEmpty(key))
                     throw new ProviderException(String.Format(Resources.Provider_unrecognized_attribute, key));
             }
 
-
-
             // Initialize MongoDB Server
-            UserClassMap.Register();
-            _db = MongoDatabase.Create(_connectionString);
-            _userCollectionName = Helper.GenerateCollectionName(_applicationName, _userCollectionSuffix);
-            _roleCollectionName = Helper.GenerateCollectionName(_applicationName, _roleCollectionSuffix);
+            Database = ClientMongo.GetMongoConnection(ConnectionString);
+
+            _userCollectionName = Helper.GenerateCollectionName(_applicationName, UserCollectionSuffix);
+            _roleCollectionName = Helper.GenerateCollectionName(_applicationName, RoleCollectionSuffix);
 
 
             // store element names
-
-            var names = new RoleMembershipElements();
-            names.LowercaseUsername = Helper.GetElementNameFor<User>(p => p.LowercaseUsername);
-            names.Roles = Helper.GetElementNameFor<User>(p => p.Roles);
+            var names = new RoleMembershipElements
+                {
+                    LowercaseUsername = Helper.GetElementNameFor<User>(p => p.LowercaseUsername),
+                    Roles = Helper.GetElementNameFor<User>(p => p.Roles)
+                };
 
             ElementNames = names;
 
@@ -259,26 +266,20 @@ namespace MongoProviders
             // MongoDB automatically indexes the _id field
             this.UserCollection.EnsureIndex(ElementNames.LowercaseUsername);
             this.UserCollection.EnsureIndex(ElementNames.Roles);
-
         }
+
         
+
 
         public override void AddUsersToRoles(string[] usernames, string[] roleNames)
         {
-            SecUtility.CheckArrayParameter(ref usernames, true, true, InvalidUsernameCharacters, MAX_USERNAME_LENGTH, "usernames");
-            SecUtility.CheckArrayParameter(ref roleNames, true, true, InvalidRoleCharacters, MAX_ROLE_LENGTH, "roleNames");
+            SecUtility.CheckArrayParameter(ref usernames, true, true, InvalidUsernameCharacters, MAX_USERNAME_LENGTH, USER_NAMES);
+            SecUtility.CheckArrayParameter(ref roleNames, true, true, InvalidRoleCharacters, MAX_ROLE_LENGTH, ROLE_NAMES);
 
             // ensure lowercase
-            var roles = new List<string>();
-            foreach (var role in roleNames)
-            {
-                roles.Add(role.ToLowerInvariant());
-            }
-            var users = new List<string>();
-            foreach (var username in usernames)
-            {
-                users.Add(username.ToLowerInvariant());
-            }
+            var roles = roleNames.Select(role => role.ToLowerInvariant()).ToList();
+
+            var users = usernames.Select(username => username.ToLowerInvariant()).ToList();
 
 
             // first add any non-existant roles to roles collection
@@ -286,7 +287,6 @@ namespace MongoProviders
             // a) pull all roles, filter out existing, push new
             //    ...or 
             // b) save all passed in roles 
-
             foreach (var role in roles)
             {
                 CreateRole(role);
@@ -294,12 +294,12 @@ namespace MongoProviders
 
 
             // now update all users' roles
-
             var query = Query.In(ElementNames.LowercaseUsername, new BsonArray(users.ToArray()));
 
             var update = Update.AddToSetEachWrapped<string>(ElementNames.Roles, roles);
 
             var result = UserCollection.Update(query, update, UpdateFlags.Multi, SafeMode.True);
+
             if (result.HasLastErrorMessage)
             {
                 throw new ProviderException(result.LastErrorMessage);
@@ -308,11 +308,14 @@ namespace MongoProviders
 
         public override void CreateRole(string roleName)
         {
-            SecUtility.CheckParameter(ref roleName, true, true, InvalidRoleCharacters, MAX_ROLE_LENGTH, "roleName");
+            SecUtility.CheckParameter(ref roleName, true, true, InvalidRoleCharacters, MAX_ROLE_LENGTH, ROLE_NAME);
 
             var doc = new BsonDocument();
-            doc.SetDocumentId(roleName.ToLowerInvariant());
-            var result = RoleCollection.Save(doc, SafeMode.True);
+            doc.Set(DOCUMENT_ID_NAME, roleName.ToLowerInvariant());
+
+            
+            var result = RoleCollection.Save(doc, WriteConcern.Acknowledged);
+
             if (!result.Ok)
             {
                 throw new ProviderException(String.Format("Could not create role '{0}'. Reason: {1}", roleName, result.LastErrorMessage));
@@ -321,7 +324,7 @@ namespace MongoProviders
 
         public override bool DeleteRole(string roleName, bool throwOnPopulatedRole)
         {
-            SecUtility.CheckParameter(ref roleName, true, true, InvalidRoleCharacters, MAX_ROLE_LENGTH, "roleName");
+            SecUtility.CheckParameter(ref roleName, true, true, InvalidRoleCharacters, MAX_ROLE_LENGTH, ROLE_NAME);
 
             var rolePopulated = UserCollection.AsQueryable().Any(u => u.Roles.Contains(roleName.ToLowerInvariant()));
             if (throwOnPopulatedRole && rolePopulated)
@@ -329,13 +332,13 @@ namespace MongoProviders
                 throw new ProviderException(Resources.Role_is_not_empty);
             }
 
-            var result = RoleCollection.Remove(Query.EQ("_id", roleName.ToLowerInvariant()), SafeMode.True);
+            var result = RoleCollection.Remove(Query.EQ(DOCUMENT_ID_NAME, roleName.ToLowerInvariant()), WriteConcern.Acknowledged);
             return result.Ok;
         }
 
         public override string[] FindUsersInRole(string roleName, string usernameToMatch)
         {
-			SecUtility.CheckParameter(ref roleName, true, true, null, MAX_ROLE_LENGTH, "roleName");
+            SecUtility.CheckParameter(ref roleName, true, true, null, MAX_ROLE_LENGTH, ROLE_NAME);
 
             if (String.IsNullOrWhiteSpace(usernameToMatch)){
                 return new string[0];
@@ -350,16 +353,9 @@ namespace MongoProviders
             var cursor = UserCollection.FindAs<BsonDocument>(query);
 
             // only want the usernames
-            cursor.SetFields(Fields.Include(username).Exclude("_id"));
+            cursor.SetFields(Fields.Include(username).Exclude(DOCUMENT_ID_NAME));
 
-            var names = new List<string>();
-            foreach (var doc in cursor)
-            {
-                var str = doc[username].AsString;
-                names.Add(str);
-            }
-
-            return names.ToArray();
+            return cursor.Select(doc => doc[username].AsString).ToArray();
         }
 
 
@@ -370,9 +366,9 @@ namespace MongoProviders
 
         public override string[] GetRolesForUser(string username)
         {
-			SecUtility.CheckParameter(ref username, true, true, InvalidUsernameCharacters, MAX_USERNAME_LENGTH, "username");
+            SecUtility.CheckParameter(ref username, true, true, InvalidUsernameCharacters, MAX_USERNAME_LENGTH, USER_NAME);
 
-            string[] roles = UserCollection.AsQueryable()
+            var roles = UserCollection.AsQueryable()
                 .Where(u => u.LowercaseUsername == username.ToLowerInvariant())
                 .Select(u => u.Roles.ToArray()).FirstOrDefault();
 
@@ -381,7 +377,7 @@ namespace MongoProviders
 
         public override string[] GetUsersInRole(string roleName)
         {
-            SecUtility.CheckParameter(ref roleName, true, true, InvalidRoleCharacters, MAX_ROLE_LENGTH, "roleName");
+            SecUtility.CheckParameter(ref roleName, true, true, InvalidRoleCharacters, MAX_ROLE_LENGTH, ROLE_NAME);
 
             var usernames = UserCollection.AsQueryable()
                 .Where(u => u.Roles.Contains(roleName.ToLowerInvariant()))
@@ -392,47 +388,37 @@ namespace MongoProviders
 
         public override bool IsUserInRole(string username, string roleName)
         {
-			SecUtility.CheckParameter(ref roleName, true, true, null, MAX_ROLE_LENGTH, "roleName");
+            SecUtility.CheckParameter(ref roleName, true, true, null, MAX_ROLE_LENGTH, ROLE_NAME);
 
-            var found = UserCollection.AsQueryable()
-                .Where(u => u.LowercaseUsername == username.ToLowerInvariant() &&
-                            u.Roles.Contains(roleName.ToLowerInvariant()) ).Any();
+            var found = UserCollection.AsQueryable().Any(u => u.LowercaseUsername == username.ToLowerInvariant() &&
+                                                               u.Roles.Contains(roleName.ToLowerInvariant()));
             return found;
         }
 
         public override void RemoveUsersFromRoles(string[] usernames, string[] roleNames)
         {
-            SecUtility.CheckArrayParameter(ref usernames, true, true, InvalidUsernameCharacters, MAX_USERNAME_LENGTH, "usernames");
-            SecUtility.CheckArrayParameter(ref roleNames, true, true, InvalidRoleCharacters, MAX_ROLE_LENGTH, "roleNames");
+            SecUtility.CheckArrayParameter(ref usernames, true, true, InvalidUsernameCharacters, MAX_USERNAME_LENGTH, USER_NAMES);
+            SecUtility.CheckArrayParameter(ref roleNames, true, true, InvalidRoleCharacters, MAX_ROLE_LENGTH, ROLE_NAMES);
 
             // update all users' roles
-
-            var roles = new List<string>();
-            foreach (var role in roleNames)
-            {
-                roles.Add(role.ToLowerInvariant());
-            }
-            var users = new List<string>();
-            foreach (var username in usernames)
-            {
-                users.Add(username.ToLowerInvariant());
-            }
+            var roles = roleNames.Select(role => role.ToLowerInvariant()).ToList();
+            var users = usernames.Select(username => username.ToLowerInvariant()).ToList();
 
             var query = Query.In(ElementNames.LowercaseUsername, new BsonArray(users.ToArray()));
 
             var update = Update.PullAllWrapped<string>(ElementNames.Roles, roles);
 
-            var result = _db.GetCollection<User>(_userCollectionName).Update(query, update, UpdateFlags.Multi, SafeMode.True);
+            var result = Database.GetCollection<User>(_userCollectionName).Update(query, update, UpdateFlags.Multi, SafeMode.True);
+
             if (result.HasLastErrorMessage)
             {
                 throw new ProviderException(result.LastErrorMessage);
             }
-
         }
 
         public override bool RoleExists(string roleName)
         {
-			SecUtility.CheckParameter(ref roleName, true, true, null, MAX_ROLE_LENGTH, "roleName");
+            SecUtility.CheckParameter(ref roleName, true, true, null, MAX_ROLE_LENGTH, ROLE_NAME);
             return Roles.Contains(roleName.ToLowerInvariant());
         }
 
