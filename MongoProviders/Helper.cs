@@ -12,7 +12,7 @@ using MongoDB.Bson.Serialization;
 
 namespace MongoProviders
 {
-    internal class Helper
+    public class Helper
     {
 
         internal static T GetConfigValue<T>(string configValue, T defaultValue)

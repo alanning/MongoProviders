@@ -833,7 +833,12 @@ namespace MongoProviders
             var onlineSpan = new TimeSpan(0, Membership.UserIsOnlineTimeWindow, 0);
             var compareTime = DateTime.UtcNow.Subtract(onlineSpan);
 
-            var count = Collection.AsQueryable().Count(u => u.LastActivityDate > compareTime);
+            var count = 0;
+
+            if (Collection != null)
+            {
+                count = Collection.AsQueryable().Count(u => u.LastActivityDate > compareTime);
+            }
 
             return count;
         }
@@ -1307,6 +1312,8 @@ namespace MongoProviders
                 case "passwordAnswer":
                     windowStart = user.FailedPasswordAnswerAttemptWindowStart;
                     failureCount = user.FailedPasswordAnswerAttemptCount;
+                    break;
+                default:
                     break;
             }
 
