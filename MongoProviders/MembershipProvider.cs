@@ -77,12 +77,12 @@ namespace MongoProviders
         public const string DEFAULT_DATABASE_NAME = "test";
         public const string DEFAULT_USER_COLLECTION_SUFFIX = "users";
         public const string DEFAULT_INVALID_CHARACTERS = ",%";
-		public const int NEW_PASSWORD_LENGTH = 8;
-		public const int MAX_USERNAME_LENGTH = 256;
-		public const int MAX_PASSWORD_LENGTH = 128;
-		public const int MAX_PASSWORD_ANSWER_LENGTH = 128;
-		public const int MAX_EMAIL_LENGTH = 256;
-		public const int MAX_PASSWORD_QUESTION_LENGTH = 256;
+        public const int NEW_PASSWORD_LENGTH = 8;
+        public const int MAX_USERNAME_LENGTH = 256;
+        public const int MAX_PASSWORD_LENGTH = 128;
+        public const int MAX_PASSWORD_ANSWER_LENGTH = 128;
+        public const int MAX_EMAIL_LENGTH = 256;
+        public const int MAX_PASSWORD_QUESTION_LENGTH = 256;
 
         public struct MembershipElements
         {
@@ -137,13 +137,13 @@ namespace MongoProviders
         protected int _minRequiredPasswordLength;
         protected string _passwordStrengthRegularExpression;
 
-		/// <summary>
-		/// The name of the application using the custom membership provider.
-		/// </summary>
-		/// <value></value>
-		/// <returns>
-		/// The name of the application using the custom membership provider.
-		/// </returns>
+        /// <summary>
+        /// The name of the application using the custom membership provider.
+        /// </summary>
+        /// <value></value>
+        /// <returns>
+        /// The name of the application using the custom membership provider.
+        /// </returns>
         public override string ApplicationName
         {
             get { return _applicationName; }
@@ -155,121 +155,121 @@ namespace MongoProviders
             }
         }
 
-		/// <summary>
-		/// Indicates whether the membership provider is configured to allow users to reset their passwords.
-		/// </summary>
-		/// <value></value>
-		/// <returns>true if the membership provider supports password reset; otherwise, false. The default is true.
-		/// </returns>
-		public override bool EnablePasswordReset
-		{
-			get { return _enablePasswordReset; }
-		}
+        /// <summary>
+        /// Indicates whether the membership provider is configured to allow users to reset their passwords.
+        /// </summary>
+        /// <value></value>
+        /// <returns>true if the membership provider supports password reset; otherwise, false. The default is true.
+        /// </returns>
+        public override bool EnablePasswordReset
+        {
+            get { return _enablePasswordReset; }
+        }
 
-		/// <summary>
-		/// Indicates whether the membership provider is configured to allow users to retrieve their passwords.
-		/// </summary>
-		/// <value></value>
-		/// <returns>true if the membership provider is configured to support password retrieval; otherwise, false. The default is false.
-		/// </returns>
-		public override bool EnablePasswordRetrieval
-		{
-			get { return _enablePasswordRetrieval; }
-		}
+        /// <summary>
+        /// Indicates whether the membership provider is configured to allow users to retrieve their passwords.
+        /// </summary>
+        /// <value></value>
+        /// <returns>true if the membership provider is configured to support password retrieval; otherwise, false. The default is false.
+        /// </returns>
+        public override bool EnablePasswordRetrieval
+        {
+            get { return _enablePasswordRetrieval; }
+        }
 
-		/// <summary>
-		/// Gets a value indicating whether the membership provider is configured to require the user to answer a password question for password reset and retrieval.
-		/// </summary>
-		/// <value></value>
-		/// <returns>true if a password answer is required for password reset and retrieval; otherwise, false. The default is true.
-		/// </returns>
-		public override bool RequiresQuestionAndAnswer
-		{
-			get { return _requiresQuestionAndAnswer; }
-		}
+        /// <summary>
+        /// Gets a value indicating whether the membership provider is configured to require the user to answer a password question for password reset and retrieval.
+        /// </summary>
+        /// <value></value>
+        /// <returns>true if a password answer is required for password reset and retrieval; otherwise, false. The default is true.
+        /// </returns>
+        public override bool RequiresQuestionAndAnswer
+        {
+            get { return _requiresQuestionAndAnswer; }
+        }
 
-		/// <summary>
-		/// Gets a value indicating whether the membership provider is configured to require a unique e-mail address for each user name.
-		/// </summary>
-		/// <value></value>
-		/// <returns>true if the membership provider requires a unique e-mail address; otherwise, false. The default is true.
-		/// </returns>
-		public override bool RequiresUniqueEmail
-		{
-			get { return _requiresUniqueEmail; }
-		}
+        /// <summary>
+        /// Gets a value indicating whether the membership provider is configured to require a unique e-mail address for each user name.
+        /// </summary>
+        /// <value></value>
+        /// <returns>true if the membership provider requires a unique e-mail address; otherwise, false. The default is true.
+        /// </returns>
+        public override bool RequiresUniqueEmail
+        {
+            get { return _requiresUniqueEmail; }
+        }
 
-		/// <summary>
-		/// Gets the number of invalid password or password-answer attempts allowed before the membership user is locked out.
-		/// </summary>
-		/// <value></value>
-		/// <returns>
-		/// The number of invalid password or password-answer attempts allowed before the membership user is locked out.
-		/// </returns>
-		public override int MaxInvalidPasswordAttempts
-		{
-			get { return _maxInvalidPasswordAttempts; }
-		}
+        /// <summary>
+        /// Gets the number of invalid password or password-answer attempts allowed before the membership user is locked out.
+        /// </summary>
+        /// <value></value>
+        /// <returns>
+        /// The number of invalid password or password-answer attempts allowed before the membership user is locked out.
+        /// </returns>
+        public override int MaxInvalidPasswordAttempts
+        {
+            get { return _maxInvalidPasswordAttempts; }
+        }
 
-		/// <summary>
-		/// Gets the number of minutes in which a maximum number of invalid password or password-answer attempts are allowed before the membership user is locked out.
-		/// </summary>
-		/// <value></value>
-		/// <returns>
-		/// The number of minutes in which a maximum number of invalid password or password-answer attempts are allowed before the membership user is locked out.
-		/// </returns>
-		public override int PasswordAttemptWindow
-		{
-			get { return _passwordAttemptWindow; }
-		}
+        /// <summary>
+        /// Gets the number of minutes in which a maximum number of invalid password or password-answer attempts are allowed before the membership user is locked out.
+        /// </summary>
+        /// <value></value>
+        /// <returns>
+        /// The number of minutes in which a maximum number of invalid password or password-answer attempts are allowed before the membership user is locked out.
+        /// </returns>
+        public override int PasswordAttemptWindow
+        {
+            get { return _passwordAttemptWindow; }
+        }
 
-		/// <summary>
-		/// Gets a value indicating the format for storing passwords in the membership data store.
-		/// </summary>
-		/// <value></value>
-		/// <returns>
-		/// One of the <see cref="T:System.Web.Security.MembershipPasswordFormat"/> values indicating the format for storing passwords in the data store.
-		/// </returns>
-		public override MembershipPasswordFormat PasswordFormat
-		{
-			get { return _passwordFormat; }
-		}
+        /// <summary>
+        /// Gets a value indicating the format for storing passwords in the membership data store.
+        /// </summary>
+        /// <value></value>
+        /// <returns>
+        /// One of the <see cref="T:System.Web.Security.MembershipPasswordFormat"/> values indicating the format for storing passwords in the data store.
+        /// </returns>
+        public override MembershipPasswordFormat PasswordFormat
+        {
+            get { return _passwordFormat; }
+        }
 
-		/// <summary>
-		/// Gets the minimum number of special characters that must be present in a valid password.
-		/// </summary>
-		/// <value></value>
-		/// <returns>
-		/// The minimum number of special characters that must be present in a valid password.
-		/// </returns>
-		public override int MinRequiredNonAlphanumericCharacters
-		{
-			get { return _minRequiredNonAlphanumericCharacters; }
-		}
+        /// <summary>
+        /// Gets the minimum number of special characters that must be present in a valid password.
+        /// </summary>
+        /// <value></value>
+        /// <returns>
+        /// The minimum number of special characters that must be present in a valid password.
+        /// </returns>
+        public override int MinRequiredNonAlphanumericCharacters
+        {
+            get { return _minRequiredNonAlphanumericCharacters; }
+        }
 
-		/// <summary>
-		/// Gets the minimum length required for a password.
-		/// </summary>
-		/// <value></value>
-		/// <returns>
-		/// The minimum length required for a password.
-		/// </returns>
-		public override int MinRequiredPasswordLength
-		{
-			get { return _minRequiredPasswordLength; }
-		}
+        /// <summary>
+        /// Gets the minimum length required for a password.
+        /// </summary>
+        /// <value></value>
+        /// <returns>
+        /// The minimum length required for a password.
+        /// </returns>
+        public override int MinRequiredPasswordLength
+        {
+            get { return _minRequiredPasswordLength; }
+        }
 
-		/// <summary>
-		/// Gets the regular expression used to evaluate a password.
-		/// </summary>
-		/// <value></value>
-		/// <returns>
-		/// A regular expression used to evaluate a password.
-		/// </returns>
-		public override string PasswordStrengthRegularExpression
-		{
-			get { return _passwordStrengthRegularExpression; }
-		}
+        /// <summary>
+        /// Gets the regular expression used to evaluate a password.
+        /// </summary>
+        /// <value></value>
+        /// <returns>
+        /// A regular expression used to evaluate a password.
+        /// </returns>
+        public override string PasswordStrengthRegularExpression
+        {
+            get { return _passwordStrengthRegularExpression; }
+        }
 
         #endregion
 
@@ -277,16 +277,16 @@ namespace MongoProviders
         #region Public Methods
 
         /// <summary>
-		/// Initializes the provider.
-		/// </summary>
-		/// <param name="name">The friendly name of the provider.</param>
-		/// <param name="config">A collection of the name/value pairs representing the provider-specific attributes specified in the configuration for this provider.</param>
-		/// <exception cref="T:System.ArgumentNullException">
-		/// The config collection provided is null.
-		/// </exception>
-		/// <exception cref="T:System.InvalidOperationException">
-		/// An attempt is made to call <see cref="M:System.Configuration.Provider.ProviderBase.Initialize(System.String,System.Collections.Specialized.NameValueCollection)"/> on a provider after the provider has already been initialized.
-		/// </exception>
+        /// Initializes the provider.
+        /// </summary>
+        /// <param name="name">The friendly name of the provider.</param>
+        /// <param name="config">A collection of the name/value pairs representing the provider-specific attributes specified in the configuration for this provider.</param>
+        /// <exception cref="T:System.ArgumentNullException">
+        /// The config collection provided is null.
+        /// </exception>
+        /// <exception cref="T:System.InvalidOperationException">
+        /// An attempt is made to call <see cref="M:System.Configuration.Provider.ProviderBase.Initialize(System.String,System.Collections.Specialized.NameValueCollection)"/> on a provider after the provider has already been initialized.
+        /// </exception>
         /// <exception cref="T:System.Configuration.Provider.ProviderException">
         /// </exception>
         public override void Initialize(string name, NameValueCollection config)
@@ -330,13 +330,9 @@ namespace MongoProviders
             if (_minRequiredNonAlphanumericCharacters > _minRequiredPasswordLength)
                 throw new ProviderException(Resources.MinRequiredNonalphanumericCharacters_can_not_be_more_than_MinRequiredPasswordLength);
 
-            string temp_format = config["passwordFormat"];
-            if (null == temp_format)
-            {
-                temp_format = "Hashed";
-            }
+            string tempFormat = config["passwordFormat"] ?? "Hashed";
 
-            switch (temp_format.ToLowerInvariant())
+            switch (tempFormat.ToLowerInvariant())
             {
                 case "hashed":
                     _passwordFormat = MembershipPasswordFormat.Hashed;
@@ -351,60 +347,58 @@ namespace MongoProviders
                     throw new ProviderException(Resources.Provider_bad_password_format);
             }
 
-			if ((PasswordFormat == MembershipPasswordFormat.Hashed) && EnablePasswordRetrieval)
-			{
+            if ((PasswordFormat == MembershipPasswordFormat.Hashed) && EnablePasswordRetrieval)
+            {
                 throw new ProviderException(Resources.Provider_can_not_retrieve_hashed_password);
-			}
+            }
 
 
 
             // Initialize Connection String
-
-            string temp = config["connectionStringName"];
+            var temp = config["connectionStringName"];
             if (String.IsNullOrWhiteSpace(temp))
                 throw new ProviderException(Resources.Connection_name_not_specified);
 
-            ConnectionStringSettings ConnectionStringSettings = ConfigurationManager.ConnectionStrings[temp];
-            if (null == ConnectionStringSettings || String.IsNullOrWhiteSpace(ConnectionStringSettings.ConnectionString))
+            var connectionStringSettings = ConfigurationManager.ConnectionStrings[temp];
+            if (null == connectionStringSettings || String.IsNullOrWhiteSpace(connectionStringSettings.ConnectionString))
                 throw new ProviderException(String.Format(Resources.Connection_string_not_found, temp));
 
-			_connectionString = ConnectionStringSettings.ConnectionString;
+            _connectionString = connectionStringSettings.ConnectionString;
 
 
-			// Check for invalid parameters in the config
+            // Check for invalid parameters in the config
 
-			config.Remove("connectionStringName");
-			config.Remove("enablePasswordRetrieval");
-			config.Remove("enablePasswordReset");
-			config.Remove("requiresQuestionAndAnswer");
-			config.Remove("applicationName");
-			config.Remove("requiresUniqueEmail");
-			config.Remove("maxInvalidPasswordAttempts");
-			config.Remove("passwordAttemptWindow");
-			config.Remove("commandTimeout");
-			config.Remove("passwordFormat");
-			config.Remove("name");
-			config.Remove("minRequiredPasswordLength");
-			config.Remove("minRequiredNonAlphanumericCharacters");
-			config.Remove("passwordStrengthRegularExpression");
+            config.Remove("connectionStringName");
+            config.Remove("enablePasswordRetrieval");
+            config.Remove("enablePasswordReset");
+            config.Remove("requiresQuestionAndAnswer");
+            config.Remove("applicationName");
+            config.Remove("requiresUniqueEmail");
+            config.Remove("maxInvalidPasswordAttempts");
+            config.Remove("passwordAttemptWindow");
+            config.Remove("commandTimeout");
+            config.Remove("passwordFormat");
+            config.Remove("name");
+            config.Remove("minRequiredPasswordLength");
+            config.Remove("minRequiredNonAlphanumericCharacters");
+            config.Remove("passwordStrengthRegularExpression");
             config.Remove("writeExceptionsToEventLog");
-            config.Remove("invalidUsernameCharacters"); 
-            config.Remove("invalidEmailCharacters"); 
+            config.Remove("invalidUsernameCharacters");
+            config.Remove("invalidEmailCharacters");
             config.Remove("collectionSuffix");
 
-			if (config.Count > 0)
-			{
-				string key = config.GetKey(0);
-				if (!string.IsNullOrEmpty(key))
-				{
+            if (config.Count > 0)
+            {
+                var key = config.GetKey(0);
+                if (!string.IsNullOrEmpty(key))
+                {
                     throw new ProviderException(String.Format(Resources.Provider_unrecognized_attribute, key));
-				}
-			}
+                }
+            }
 
 
             // Get encryption and decryption key information from the configuration.
-
-            Configuration cfg =
+            var cfg =
               WebConfigurationManager.OpenWebConfiguration(System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath);
             _machineKey = (MachineKeySection)ConfigurationManager.GetSection("system.web/machineKey");
 
@@ -414,19 +408,19 @@ namespace MongoProviders
 
 
             // Initialize MongoDB Server
-
-            UserClassMap.Register();
-            Database = MongoDatabase.Create(_connectionString);
+            Database = ClientMongo.GetMongoConnection(_connectionString);
             CollectionName = Helper.GenerateCollectionName(_applicationName, _collectionSuffix);
             Collection = Database.GetCollection<User>(CollectionName);
 
 
             // store element names
 
-            var names = new MembershipElements();
-            names.LowercaseUsername = Helper.GetElementNameFor<User>(p => p.LowercaseUsername);
-            names.LastActivityDate = Helper.GetElementNameFor<User, DateTime>(p => p.LastActivityDate);
-            names.LowercaseEmail = Helper.GetElementNameFor<User>(p => p.LowercaseEmail);
+            var names = new MembershipElements
+                {
+                    LowercaseUsername = Helper.GetElementNameFor<User>(p => p.LowercaseUsername),
+                    LastActivityDate = Helper.GetElementNameFor<User, DateTime>(p => p.LastActivityDate),
+                    LowercaseEmail = Helper.GetElementNameFor<User>(p => p.LowercaseEmail)
+                };
             ElementNames = names;
 
 
@@ -434,40 +428,40 @@ namespace MongoProviders
 
             this.Collection.EnsureIndex(ElementNames.LowercaseUsername);
             this.Collection.EnsureIndex(ElementNames.LowercaseEmail);
-        
+
         }
 
 
 
-		/// <summary>
-		/// Processes a request to update the password for a membership user.
-		/// </summary>
-		/// <param name="username">The user to update the password for.</param>
-		/// <param name="oldPassword">The current password for the specified user.</param>
-		/// <param name="newPassword">The new password for the specified user.</param>
-		/// <returns>
-		/// true if the password was updated successfully; otherwise, false.
-		/// </returns>
+        /// <summary>
+        /// Processes a request to update the password for a membership user.
+        /// </summary>
+        /// <param name="username">The user to update the password for.</param>
+        /// <param name="oldPassword">The current password for the specified user.</param>
+        /// <param name="newPassword">The new password for the specified user.</param>
+        /// <returns>
+        /// true if the password was updated successfully; otherwise, false.
+        /// </returns>
         public override bool ChangePassword(string username, string oldPassword, string newPassword)
         {
-			SecUtility.CheckParameter(ref username, true, true, InvalidUsernameCharacters, MAX_USERNAME_LENGTH, "username");
-			SecUtility.CheckParameter(ref oldPassword, true, true, null, MAX_PASSWORD_LENGTH, "oldPassword");
-			SecUtility.CheckParameter(ref newPassword, true, true, null, MAX_PASSWORD_LENGTH, "newPassword");
+            SecUtility.CheckParameter(ref username, true, true, InvalidUsernameCharacters, MAX_USERNAME_LENGTH, "username");
+            SecUtility.CheckParameter(ref oldPassword, true, true, null, MAX_PASSWORD_LENGTH, "oldPassword");
+            SecUtility.CheckParameter(ref newPassword, true, true, null, MAX_PASSWORD_LENGTH, "newPassword");
 
             User user = GetUserByName(username, "ChangePassword");
-			if (!CheckPassword(user, oldPassword, true))
-				return false;
+            if (!CheckPassword(user, oldPassword, true))
+                return false;
 
-			if (newPassword.Length < this.MinRequiredPasswordLength)
-			{
-                throw new ArgumentException(String.Format(CultureInfo.CurrentCulture, 
+            if (newPassword.Length < this.MinRequiredPasswordLength)
+            {
+                throw new ArgumentException(String.Format(CultureInfo.CurrentCulture,
                     Resources.Password_too_short,
                     "newPassword", this.MinRequiredPasswordLength), "newPassword");
-			}
+            }
 
             if (this.MinRequiredNonAlphanumericCharacters > 0)
             {
-                int numNonAlphaNumericChars = 0;
+                var numNonAlphaNumericChars = 0;
                 for (int i = 0; i < newPassword.Length; i++)
                 {
                     if (!char.IsLetterOrDigit(newPassword, i))
@@ -477,37 +471,37 @@ namespace MongoProviders
                 }
                 if (numNonAlphaNumericChars < this.MinRequiredNonAlphanumericCharacters)
                 {
-                    throw new ArgumentException(String.Format(CultureInfo.CurrentCulture, 
+                    throw new ArgumentException(String.Format(CultureInfo.CurrentCulture,
                         Resources.Password_need_more_non_alpha_numeric_chars,
                         "newPassword",
                         this.MinRequiredNonAlphanumericCharacters), "newPassword");
                 }
             }
 
-			if ((this.PasswordStrengthRegularExpression.Length > 0) && !Regex.IsMatch(newPassword, this.PasswordStrengthRegularExpression))
-			{
+            if ((this.PasswordStrengthRegularExpression.Length > 0) && !Regex.IsMatch(newPassword, this.PasswordStrengthRegularExpression))
+            {
                 throw new ArgumentException(String.Format(CultureInfo.CurrentCulture,
                     Resources.Password_does_not_match_regular_expression,
                     "newPassword"), "newPassword");
-			}
+            }
 
 
             // Raise event to let others check new username/password
 
-			ValidatePasswordEventArgs args = new ValidatePasswordEventArgs(username, newPassword, false);
-			OnValidatingPassword(args);
-			if (args.Cancel)
-			{
+            ValidatePasswordEventArgs args = new ValidatePasswordEventArgs(username, newPassword, false);
+            OnValidatingPassword(args);
+            if (args.Cancel)
+            {
                 if (args.FailureInformation != null)
                     throw args.FailureInformation;
                 else
                     throw new MembershipPasswordException(Resources.Membership_Custom_Password_Validation_Failure);
-			}
+            }
 
 
             // Save new password
 
-			string encodedPwd = EncodePassword(newPassword, PasswordFormat, user.PasswordSalt);
+            string encodedPwd = EncodePassword(newPassword, PasswordFormat, user.PasswordSalt);
 
             user.Password = encodedPwd;
             user.PasswordFormat = PasswordFormat;
@@ -519,38 +513,38 @@ namespace MongoProviders
             return true;
         }
 
-		/// <summary>
-		/// Processes a request to update the password question and answer for a membership user.
-		/// </summary>
-		/// <param name="username">The user to change the password question and answer for.</param>
-		/// <param name="password">The password for the specified user.</param>
-		/// <param name="newPasswordQuestion">The new password question for the specified user.</param>
-		/// <param name="newPasswordAnswer">The new password answer for the specified user.</param>
-		/// <returns>
-		/// true if the password question and answer are updated successfully; otherwise, false.
-		/// </returns>
+        /// <summary>
+        /// Processes a request to update the password question and answer for a membership user.
+        /// </summary>
+        /// <param name="username">The user to change the password question and answer for.</param>
+        /// <param name="password">The password for the specified user.</param>
+        /// <param name="newPasswordQuestion">The new password question for the specified user.</param>
+        /// <param name="newPasswordAnswer">The new password answer for the specified user.</param>
+        /// <returns>
+        /// true if the password question and answer are updated successfully; otherwise, false.
+        /// </returns>
         public override bool ChangePasswordQuestionAndAnswer(string username, string password, string newPasswordQuestion, string newPasswordAnswer)
         {
-			SecUtility.CheckParameter(ref username, true, true, InvalidUsernameCharacters, MAX_USERNAME_LENGTH, "username");
-			SecUtility.CheckParameter(ref password, true, true, null, MAX_PASSWORD_LENGTH, "password");
+            SecUtility.CheckParameter(ref username, true, true, InvalidUsernameCharacters, MAX_USERNAME_LENGTH, "username");
+            SecUtility.CheckParameter(ref password, true, true, null, MAX_PASSWORD_LENGTH, "password");
 
             User user = GetUserByName(username, "ChangePasswordQuestionAndAnswer");
-			if (!CheckPassword(user, password, true))
-				return false;
+            if (!CheckPassword(user, password, true))
+                return false;
 
-			SecUtility.CheckParameter(ref newPasswordQuestion, this.RequiresQuestionAndAnswer, this.RequiresQuestionAndAnswer, null, MAX_PASSWORD_QUESTION_LENGTH, "newPasswordQuestion");
-			if (newPasswordAnswer != null)
-			{
-				newPasswordAnswer = newPasswordAnswer.Trim();
-			}
+            SecUtility.CheckParameter(ref newPasswordQuestion, this.RequiresQuestionAndAnswer, this.RequiresQuestionAndAnswer, null, MAX_PASSWORD_QUESTION_LENGTH, "newPasswordQuestion");
+            if (newPasswordAnswer != null)
+            {
+                newPasswordAnswer = newPasswordAnswer.Trim();
+            }
 
-			SecUtility.CheckParameter(ref newPasswordAnswer, this.RequiresQuestionAndAnswer, this.RequiresQuestionAndAnswer, null, MAX_PASSWORD_ANSWER_LENGTH, "newPasswordAnswer");
+            SecUtility.CheckParameter(ref newPasswordAnswer, this.RequiresQuestionAndAnswer, this.RequiresQuestionAndAnswer, null, MAX_PASSWORD_ANSWER_LENGTH, "newPasswordAnswer");
             string encodedPasswordAnswer = null;
-			if (!string.IsNullOrEmpty(newPasswordAnswer))
-			{
-				encodedPasswordAnswer = EncodePassword(newPasswordAnswer.ToLowerInvariant(), user.PasswordFormat, user.PasswordSalt);
-			}
-			//SecUtility.CheckParameter(ref encodedPasswordAnswer, this.RequiresQuestionAndAnswer, this.RequiresQuestionAndAnswer, false, MAX_PASSWORD_ANSWER_LENGTH, "newPasswordAnswer");
+            if (!string.IsNullOrEmpty(newPasswordAnswer))
+            {
+                encodedPasswordAnswer = EncodePassword(newPasswordAnswer.ToLowerInvariant(), user.PasswordFormat, user.PasswordSalt);
+            }
+            //SecUtility.CheckParameter(ref encodedPasswordAnswer, this.RequiresQuestionAndAnswer, this.RequiresQuestionAndAnswer, false, MAX_PASSWORD_ANSWER_LENGTH, "newPasswordAnswer");
 
             user.PasswordQuestion = newPasswordQuestion;
             user.PasswordAnswer = encodedPasswordAnswer;
@@ -561,41 +555,41 @@ namespace MongoProviders
             return true;
         }
 
-		/// <summary>
-		/// Adds a new membership user to the data source.
-		/// </summary>
-		/// <param name="username">The user name for the new user.</param>
-		/// <param name="password">The password for the new user.</param>
-		/// <param name="email">The e-mail address for the new user.</param>
-		/// <param name="passwordQuestion">The password question for the new user.</param>
-		/// <param name="passwordAnswer">The password answer for the new user</param>
-		/// <param name="isApproved">Whether or not the new user is approved to be validated.</param>
-		/// <param name="providerUserKey">The unique identifier from the membership data source for the user.</param>
-		/// <param name="status">A <see cref="T:System.Web.Security.MembershipCreateStatus"/> enumeration value indicating whether the user was created successfully.</param>
-		/// <returns>
-		/// A <see cref="T:System.Web.Security.MembershipUser"/> object populated with the information for the newly created user.
-		/// </returns>
+        /// <summary>
+        /// Adds a new membership user to the data source.
+        /// </summary>
+        /// <param name="username">The user name for the new user.</param>
+        /// <param name="password">The password for the new user.</param>
+        /// <param name="email">The e-mail address for the new user.</param>
+        /// <param name="passwordQuestion">The password question for the new user.</param>
+        /// <param name="passwordAnswer">The password answer for the new user</param>
+        /// <param name="isApproved">Whether or not the new user is approved to be validated.</param>
+        /// <param name="providerUserKey">The unique identifier from the membership data source for the user.</param>
+        /// <param name="status">A <see cref="T:System.Web.Security.MembershipCreateStatus"/> enumeration value indicating whether the user was created successfully.</param>
+        /// <returns>
+        /// A <see cref="T:System.Web.Security.MembershipUser"/> object populated with the information for the newly created user.
+        /// </returns>
         public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status)
         {
-			#region Validation
+            #region Validation
 
-			if (!SecUtility.ValidateParameter(ref username, true, true, InvalidUsernameCharacters, MAX_USERNAME_LENGTH))
-			{
-				status = MembershipCreateStatus.InvalidUserName;
-				return null;
-			}
+            if (!SecUtility.ValidateParameter(ref username, true, true, InvalidUsernameCharacters, MAX_USERNAME_LENGTH))
+            {
+                status = MembershipCreateStatus.InvalidUserName;
+                return null;
+            }
 
-			if (!SecUtility.ValidateParameter(ref email, this.RequiresUniqueEmail, this.RequiresUniqueEmail, InvalidEmailCharacters, MAX_EMAIL_LENGTH))
-			{
-				status = MembershipCreateStatus.InvalidEmail;
-				return null;
-			}
+            if (!SecUtility.ValidateParameter(ref email, this.RequiresUniqueEmail, this.RequiresUniqueEmail, InvalidEmailCharacters, MAX_EMAIL_LENGTH))
+            {
+                status = MembershipCreateStatus.InvalidEmail;
+                return null;
+            }
 
-			if (!SecUtility.ValidateParameter(ref password, true, true, null, MAX_PASSWORD_LENGTH))
-			{
-				status = MembershipCreateStatus.InvalidPassword;
-				return null;
-			}
+            if (!SecUtility.ValidateParameter(ref password, true, true, null, MAX_PASSWORD_LENGTH))
+            {
+                status = MembershipCreateStatus.InvalidPassword;
+                return null;
+            }
 
             if (password.Length > MAX_PASSWORD_LENGTH)
             {
@@ -603,46 +597,46 @@ namespace MongoProviders
                 return null;
             }
 
-			if (null != passwordAnswer)
-			{
-				passwordAnswer = passwordAnswer.Trim();
-			}
+            if (null != passwordAnswer)
+            {
+                passwordAnswer = passwordAnswer.Trim();
+            }
 
-			if (string.IsNullOrEmpty(passwordAnswer))
-			{
+            if (string.IsNullOrEmpty(passwordAnswer))
+            {
                 if (RequiresQuestionAndAnswer)
                 {
                     status = MembershipCreateStatus.InvalidAnswer;
                     return null;
                 }
-			}
-			else
-			{
-				if (passwordAnswer.Length > MAX_PASSWORD_ANSWER_LENGTH)
-				{
-					status = MembershipCreateStatus.InvalidAnswer;
-					return null;
-				}
-			}
+            }
+            else
+            {
+                if (passwordAnswer.Length > MAX_PASSWORD_ANSWER_LENGTH)
+                {
+                    status = MembershipCreateStatus.InvalidAnswer;
+                    return null;
+                }
+            }
 
 
-			if (!SecUtility.ValidateParameter(ref passwordQuestion, this.RequiresQuestionAndAnswer, true, null, MAX_PASSWORD_QUESTION_LENGTH))
-			{
-				status = MembershipCreateStatus.InvalidQuestion;
-				return null;
-			}
+            if (!SecUtility.ValidateParameter(ref passwordQuestion, this.RequiresQuestionAndAnswer, true, null, MAX_PASSWORD_QUESTION_LENGTH))
+            {
+                status = MembershipCreateStatus.InvalidQuestion;
+                return null;
+            }
 
-			if ((null != providerUserKey) && !(providerUserKey is Guid))
-			{
-				status = MembershipCreateStatus.InvalidProviderUserKey;
-				return null;
-			}
+            if ((null != providerUserKey) && !(providerUserKey is Guid))
+            {
+                status = MembershipCreateStatus.InvalidProviderUserKey;
+                return null;
+            }
 
-			if (password.Length < this.MinRequiredPasswordLength)
-			{
-				status = MembershipCreateStatus.InvalidPassword;
-				return null;
-			}
+            if (password.Length < this.MinRequiredPasswordLength)
+            {
+                status = MembershipCreateStatus.InvalidPassword;
+                return null;
+            }
 
             if (this.MinRequiredNonAlphanumericCharacters > 0)
             {
@@ -662,55 +656,44 @@ namespace MongoProviders
                 }
             }
 
-			if ((this.PasswordStrengthRegularExpression.Length > 0) && !Regex.IsMatch(password, this.PasswordStrengthRegularExpression))
-			{
-				status = MembershipCreateStatus.InvalidPassword;
-				return null;
-			}
+            if ((this.PasswordStrengthRegularExpression.Length > 0) && !Regex.IsMatch(password, this.PasswordStrengthRegularExpression))
+            {
+                status = MembershipCreateStatus.InvalidPassword;
+                return null;
+            }
 
-			#endregion
+            #endregion
 
-			ValidatePasswordEventArgs args = new ValidatePasswordEventArgs(username, password, true);
+            ValidatePasswordEventArgs args = new ValidatePasswordEventArgs(username, password, true);
 
-			OnValidatingPassword(args);
+            OnValidatingPassword(args);
 
-			if (args.Cancel)
-			{
-				status = MembershipCreateStatus.InvalidPassword;
-				return null;
-			}
+            if (args.Cancel)
+            {
+                status = MembershipCreateStatus.InvalidPassword;
+                return null;
+            }
 
-			if (RequiresUniqueEmail && !String.IsNullOrEmpty(GetUserNameByEmail(email)))
-			{
-				status = MembershipCreateStatus.DuplicateEmail;
-				return null;
-			}
+            if (RequiresUniqueEmail && !String.IsNullOrEmpty(GetUserNameByEmail(email)))
+            {
+                status = MembershipCreateStatus.DuplicateEmail;
+                return null;
+            }
 
-			MembershipUser u = GetUser(username, false);
+            MembershipUser u = GetUser(username, false);
             if (null != u)
             {
                 status = MembershipCreateStatus.DuplicateUserName;
                 return null;
             }
 
-
-            DateTime createDate = DateTime.UtcNow;
-
             if (null == providerUserKey)
             {
                 providerUserKey = Guid.NewGuid();
             }
-            else
-            {
-                if (!(providerUserKey is Guid))
-                {
-                    status = MembershipCreateStatus.InvalidProviderUserKey;
-                    return null;
-                }
-            }
 
             var createAt = DateTime.UtcNow;
-			string salt = GenerateSalt();
+            string salt = GenerateSalt();
 
             var answer = passwordAnswer;
             if (null != answer)
@@ -718,28 +701,30 @@ namespace MongoProviders
                 answer = EncodePassword(passwordAnswer.ToLowerInvariant(), PasswordFormat, salt);
             }
 
-            var user = new User();
-            user.Id = (Guid)providerUserKey;
-            user.Username = username;
-            user.LowercaseUsername = username.ToLowerInvariant();
-            user.DisplayName = username;
-            user.Email = email;
-            user.LowercaseEmail = (null == email) ? null : email.ToLowerInvariant();
-            user.Password = EncodePassword(password, PasswordFormat, salt);
-            user.PasswordQuestion = passwordQuestion;
-            user.PasswordAnswer = answer;
-            user.PasswordFormat = PasswordFormat;
-            user.PasswordSalt = salt;
-            user.IsApproved = isApproved;
-            user.LastPasswordChangedDate = DateTime.MinValue;
-            user.CreateDate = createAt;
-            user.IsLockedOut = false;
-            user.LastLockedOutDate = DateTime.MinValue;
-            user.LastActivityDate = createAt;
-            user.FailedPasswordAnswerAttemptCount = 0;
-            user.FailedPasswordAnswerAttemptWindowStart = DateTime.MinValue;
-            user.FailedPasswordAttemptCount = 0;
-            user.FailedPasswordAttemptWindowStart = DateTime.MinValue;
+            var user = new User
+                {
+                    Id = (Guid)providerUserKey,
+                    Username = username,
+                    LowercaseUsername = username.ToLowerInvariant(),
+                    DisplayName = username,
+                    Email = email,
+                    LowercaseEmail = (null == email) ? null : email.ToLowerInvariant(),
+                    Password = EncodePassword(password, PasswordFormat, salt),
+                    PasswordQuestion = passwordQuestion,
+                    PasswordAnswer = answer,
+                    PasswordFormat = PasswordFormat,
+                    PasswordSalt = salt,
+                    IsApproved = isApproved,
+                    LastPasswordChangedDate = DateTime.MinValue,
+                    CreateDate = createAt,
+                    IsLockedOut = false,
+                    LastLockedOutDate = DateTime.MinValue,
+                    LastActivityDate = createAt,
+                    FailedPasswordAnswerAttemptCount = 0,
+                    FailedPasswordAnswerAttemptWindowStart = DateTime.MinValue,
+                    FailedPasswordAttemptCount = 0,
+                    FailedPasswordAttemptWindowStart = DateTime.MinValue
+                };
 
             var msg = String.Format("Error creating new User '{0}'", username);
             Save(user, msg, "CreateUser");
@@ -749,14 +734,14 @@ namespace MongoProviders
 
         }
 
-		/// <summary>
-		/// Removes a user from the membership data source.
-		/// </summary>
-		/// <param name="username">The name of the user to delete.</param>
-		/// <param name="deleteAllRelatedData">true to delete data related to the user from the database; false to leave data related to the user in the database.</param>
-		/// <returns>
-		/// true if the user was successfully deleted; otherwise, false.
-		/// </returns>
+        /// <summary>
+        /// Removes a user from the membership data source.
+        /// </summary>
+        /// <param name="username">The name of the user to delete.</param>
+        /// <param name="deleteAllRelatedData">true to delete data related to the user from the database; false to leave data related to the user in the database.</param>
+        /// <returns>
+        /// true if the user was successfully deleted; otherwise, false.
+        /// </returns>
         public override bool DeleteUser(string username, bool deleteAllRelatedData)
         {
             if (String.IsNullOrWhiteSpace(username)) return false;
@@ -768,42 +753,42 @@ namespace MongoProviders
         }
 
 
-		/// <summary>
-		/// Gets a collection of membership users where the user name matches the specified string.
-		/// </summary>
-		/// <param name="usernameToMatch">The user name to search for.
+        /// <summary>
+        /// Gets a collection of membership users where the user name matches the specified string.
+        /// </summary>
+        /// <param name="usernameToMatch">The user name to search for.
         /// Match string may contain the standard SQL LIKE wildcard: %
         ///   "sm%"  -> StartsWith("sm")
         ///   "%ith" -> EndsWith("ith")
         ///   "%mit%" -> Contains("mit")
         /// </param>
-		/// <param name="pageIndex">The index of the page of results to return. <paramref name="pageIndex"/> is zero-based.</param>
-		/// <param name="pageSize">The size of the page of results to return.</param>
-		/// <param name="totalRecords">The total number of matched users.</param>
-		/// <returns>
-		/// A <see cref="T:System.Web.Security.MembershipUserCollection"/> collection that contains a page of <paramref name="pageSize"/><see cref="T:System.Web.Security.MembershipUser"/> objects beginning at the page specified by <paramref name="pageIndex"/>.
-		/// </returns>
+        /// <param name="pageIndex">The index of the page of results to return. <paramref name="pageIndex"/> is zero-based.</param>
+        /// <param name="pageSize">The size of the page of results to return.</param>
+        /// <param name="totalRecords">The total number of matched users.</param>
+        /// <returns>
+        /// A <see cref="T:System.Web.Security.MembershipUserCollection"/> collection that contains a page of <paramref name="pageSize"/><see cref="T:System.Web.Security.MembershipUser"/> objects beginning at the page specified by <paramref name="pageIndex"/>.
+        /// </returns>
         public override MembershipUserCollection FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords)
         {
             return FindUsersBy(ElementNames.LowercaseUsername, usernameToMatch, pageIndex, pageSize, out totalRecords);
         }
 
 
-		/// <summary>
-		/// Gets a collection of membership users where the e-mail address matches the specified string.
-		/// </summary>
-		/// <param name="emailToMatch">The e-mail address to search for.
+        /// <summary>
+        /// Gets a collection of membership users where the e-mail address matches the specified string.
+        /// </summary>
+        /// <param name="emailToMatch">The e-mail address to search for.
         /// Match string may contain the standard SQL LIKE wildcard: %
         ///   "sm%"  -> StartsWith("sm")
         ///   "%ith" -> EndsWith("ith")
         ///   "%mit%" -> Contains("mit")
         /// </param>
-		/// <param name="pageIndex">The index of the page of results to return. <paramref name="pageIndex"/> is zero-based.</param>
-		/// <param name="pageSize">The size of the page of results to return.</param>
-		/// <param name="totalRecords">The total number of matched users.</param>
-		/// <returns>
-		/// A <see cref="T:System.Web.Security.MembershipUserCollection"/> collection that contains a page of <paramref name="pageSize"/><see cref="T:System.Web.Security.MembershipUser"/> objects beginning at the page specified by <paramref name="pageIndex"/>.
-		/// </returns>
+        /// <param name="pageIndex">The index of the page of results to return. <paramref name="pageIndex"/> is zero-based.</param>
+        /// <param name="pageSize">The size of the page of results to return.</param>
+        /// <param name="totalRecords">The total number of matched users.</param>
+        /// <returns>
+        /// A <see cref="T:System.Web.Security.MembershipUserCollection"/> collection that contains a page of <paramref name="pageSize"/><see cref="T:System.Web.Security.MembershipUser"/> objects beginning at the page specified by <paramref name="pageIndex"/>.
+        /// </returns>
         public override MembershipUserCollection FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords)
         {
             return FindUsersBy(ElementNames.LowercaseEmail, emailToMatch, pageIndex, pageSize, out totalRecords);
@@ -811,27 +796,21 @@ namespace MongoProviders
 
 
 
-		/// <summary>
-		/// Gets a collection of all the users in the data source in pages of data.
-		/// </summary>
-		/// <param name="pageIndex">The index of the page of results to return. <paramref name="pageIndex"/> is zero-based.</param>
-		/// <param name="pageSize">The size of the page of results to return.</param>
-		/// <param name="totalRecords">The total number of matched users.</param>
-		/// <returns>
-		/// A <see cref="T:System.Web.Security.MembershipUserCollection"/> collection that contains a page of <paramref name="pageSize"/><see cref="T:System.Web.Security.MembershipUser"/> objects beginning at the page specified by <paramref name="pageIndex"/>.
-		/// </returns>
+        /// <summary>
+        /// Gets a collection of all the users in the data source in pages of data.
+        /// </summary>
+        /// <param name="pageIndex">The index of the page of results to return. <paramref name="pageIndex"/> is zero-based.</param>
+        /// <param name="pageSize">The size of the page of results to return.</param>
+        /// <param name="totalRecords">The total number of matched users.</param>
+        /// <returns>
+        /// A <see cref="T:System.Web.Security.MembershipUserCollection"/> collection that contains a page of <paramref name="pageSize"/><see cref="T:System.Web.Security.MembershipUser"/> objects beginning at the page specified by <paramref name="pageIndex"/>.
+        /// </returns>
         public override MembershipUserCollection GetAllUsers(int pageIndex, int pageSize, out int totalRecords)
         {
             MembershipUserCollection users = new MembershipUserCollection();
             var matches = Collection.AsQueryable().Skip(pageIndex * pageSize)
                             .Take(pageSize)
                             .ToList();
-
-            if (null == matches)
-            {
-                totalRecords = 0;
-                return users;
-            }
 
             // execute second query to get total count
             totalRecords = (int)Collection.Count();
@@ -841,41 +820,47 @@ namespace MongoProviders
             return users;
         }
 
-		/// <summary>
-		/// Gets the number of users currently accessing the application.
-		/// </summary>
-		/// <returns>
-		/// The number of users currently accessing the application.
-		/// </returns>
+        /// <summary>
+        /// Gets the number of users currently accessing the application.
+        /// </summary>
+        /// <returns>
+        /// The number of users currently accessing the application.
+        /// </returns>
         public override int GetNumberOfUsersOnline()
         {
             // http://msdn.microsoft.com/en-us/library/system.web.security.membership.userisonlinetimewindow.aspx
 
-            TimeSpan onlineSpan = new TimeSpan(0, Membership.UserIsOnlineTimeWindow, 0);
-            DateTime compareTime = DateTime.UtcNow.Subtract(onlineSpan);
+            var onlineSpan = new TimeSpan(0, Membership.UserIsOnlineTimeWindow, 0);
+            var compareTime = DateTime.UtcNow.Subtract(onlineSpan);
 
-            var count = Collection.AsQueryable().Where(u => u.LastActivityDate > compareTime).Count();
+            var count = 0;
+
+            if (Collection != null)
+            {
+                count = Collection.AsQueryable().Count(u => u.LastActivityDate > compareTime);
+            }
 
             return count;
         }
 
-		/// <summary>
-		/// Gets the password for the specified user name from the data source.
-		/// </summary>
-		/// <param name="username">The user to retrieve the password for.</param>
-		/// <param name="answer">The password answer for the user.</param>
-		/// <returns>
-		/// The password for the specified user name.
-		/// </returns>
+        /// <summary>
+        /// Gets the password for the specified user name from the data source.
+        /// </summary>
+        /// <param name="username">The user to retrieve the password for.</param>
+        /// <param name="answer">The password answer for the user.</param>
+        /// <returns>
+        /// The password for the specified user name.
+        /// </returns>
         public override string GetPassword(string username, string answer)
         {
-			if (!EnablePasswordRetrieval)
-			{
+            if (!EnablePasswordRetrieval)
+            {
                 throw new ProviderException(Resources.Membership_PasswordRetrieval_not_supported);
-			}
+            }
 
             User user = GetUserByName(username, "GetPassword");
-            if (null == user) {
+            if (null == user)
+            {
                 throw new MembershipPasswordException(Resources.Membership_UserNotFound);
             }
 
@@ -901,14 +886,14 @@ namespace MongoProviders
             return password;
         }
 
-		/// <summary>
-		/// Gets information from the data source for a user. Provides an option to update the last-activity date/time stamp for the user.
-		/// </summary>
-		/// <param name="username">The name of the user to get information for.</param>
-		/// <param name="userIsOnline">true to update the last-activity date/time stamp for the user; false to return user information without updating the last-activity date/time stamp for the user.</param>
-		/// <returns>
-		/// A <see cref="T:System.Web.Security.MembershipUser"/> object populated with the specified user's information from the data source.
-		/// </returns>
+        /// <summary>
+        /// Gets information from the data source for a user. Provides an option to update the last-activity date/time stamp for the user.
+        /// </summary>
+        /// <param name="username">The name of the user to get information for.</param>
+        /// <param name="userIsOnline">true to update the last-activity date/time stamp for the user; false to return user information without updating the last-activity date/time stamp for the user.</param>
+        /// <returns>
+        /// A <see cref="T:System.Web.Security.MembershipUser"/> object populated with the specified user's information from the data source.
+        /// </returns>
         public override MembershipUser GetUser(string username, bool userIsOnline)
         {
             if (String.IsNullOrWhiteSpace(username)) return null;
@@ -930,22 +915,23 @@ namespace MongoProviders
             }
             else
             {
-                User user = Collection.AsQueryable().Where(u => u.LowercaseUsername == username.ToLowerInvariant()).FirstOrDefault();
+                User user = Collection.AsQueryable().FirstOrDefault(u => u.LowercaseUsername == username.ToLowerInvariant());
                 return ToMembershipUser(user);
             }
         }
 
-		/// <summary>
-		/// Gets user information from the data source based on the unique identifier for the membership user. Provides an option to update the last-activity date/time stamp for the user.
-		/// </summary>
-		/// <param name="providerUserKey">The unique identifier for the membership user to get information for.</param>
-		/// <param name="userIsOnline">true to update the last-activity date/time stamp for the user; false to return user information without updating the last-activity date/time stamp for the user.</param>
-		/// <returns>
-		/// A <see cref="T:System.Web.Security.MembershipUser"/> object populated with the specified user's information from the data source.
-		/// </returns>
+        /// <summary>
+        /// Gets user information from the data source based on the unique identifier for the membership user. Provides an option to update the last-activity date/time stamp for the user.
+        /// </summary>
+        /// <param name="providerUserKey">The unique identifier for the membership user to get information for.</param>
+        /// <param name="userIsOnline">true to update the last-activity date/time stamp for the user; false to return user information without updating the last-activity date/time stamp for the user.</param>
+        /// <returns>
+        /// A <see cref="T:System.Web.Security.MembershipUser"/> object populated with the specified user's information from the data source.
+        /// </returns>
         public override MembershipUser GetUser(object providerUserKey, bool userIsOnline)
         {
-            if (!(providerUserKey is Guid)){
+            if (!(providerUserKey is Guid))
+            {
                 throw new ArgumentException(Resources.Membership_InvalidProviderUserKey, "providerUserKey");
             }
             if (userIsOnline)
@@ -963,53 +949,53 @@ namespace MongoProviders
             }
             else
             {
-                User user = Collection.AsQueryable().Where(u => u.Id == (Guid)providerUserKey).FirstOrDefault();
+                User user = Collection.AsQueryable().FirstOrDefault(u => u.Id == (Guid)providerUserKey);
                 return ToMembershipUser(user);
             }
         }
 
-		/// <summary>
-		/// Gets the user name associated with the specified e-mail address.
-		/// </summary>
-		/// <param name="email">The e-mail address to search for.</param>
-		/// <returns>
-		/// The user name associated with the specified e-mail address. If no match is found, return null.
-		/// </returns>
+        /// <summary>
+        /// Gets the user name associated with the specified e-mail address.
+        /// </summary>
+        /// <param name="email">The e-mail address to search for.</param>
+        /// <returns>
+        /// The user name associated with the specified e-mail address. If no match is found, return null.
+        /// </returns>
         public override string GetUserNameByEmail(string email)
         {
-			if (null == email)
-				return null;
+            if (null == email)
+                return null;
 
             var username = Collection.AsQueryable().Where(u => u.LowercaseEmail == email.ToLowerInvariant()).Select(u => u.Username).FirstOrDefault();
             return username;
         }
 
 
-		/// <summary>
-		/// Resets a user's password to a new, automatically generated password.
-		/// </summary>
-		/// <param name="username">The user to reset the password for.</param>
-		/// <param name="passwordAnswer">The password answer for the specified user.</param>
-		/// <returns>The new password for the specified user.</returns>
-		/// <exception cref="T:System.Configuration.Provider.ProviderException">username is not found in the membership database.- or -The 
-		/// change password action was canceled by a subscriber to the System.Web.Security.Membership.ValidatePassword
-		/// event and the <see cref="P:System.Web.Security.ValidatePasswordEventArgs.FailureInformation"></see> property was null.- or -An 
-		/// error occurred while retrieving the password from the database. </exception>
-		/// <exception cref="T:System.NotSupportedException"><see cref="P:System.Web.Security.SqlMembershipProvider.EnablePasswordReset"></see> 
-		/// is set to false. </exception>
-		/// <exception cref="T:System.ArgumentException">username is an empty string (""), contains a comma, or is longer than 256 characters.
-		/// - or -passwordAnswer is an empty string or is longer than 128 characters and 
-		/// <see cref="P:System.Web.Security.SqlMembershipProvider.RequiresQuestionAndAnswer"></see> is true.- or -passwordAnswer is longer 
-		/// than 128 characters after encoding.</exception>
-		/// <exception cref="T:System.ArgumentNullException">username is null.- or -passwordAnswer is null and 
-		/// <see cref="P:System.Web.Security.SqlMembershipProvider.RequiresQuestionAndAnswer"></see> is true.</exception>
-		/// <exception cref="T:System.Web.Security.MembershipPasswordException">passwordAnswer is invalid. - or -The user account is currently locked out.</exception>
+        /// <summary>
+        /// Resets a user's password to a new, automatically generated password.
+        /// </summary>
+        /// <param name="username">The user to reset the password for.</param>
+        /// <param name="passwordAnswer">The password answer for the specified user.</param>
+        /// <returns>The new password for the specified user.</returns>
+        /// <exception cref="T:System.Configuration.Provider.ProviderException">username is not found in the membership database.- or -The 
+        /// change password action was canceled by a subscriber to the System.Web.Security.Membership.ValidatePassword
+        /// event and the <see cref="P:System.Web.Security.ValidatePasswordEventArgs.FailureInformation"></see> property was null.- or -An 
+        /// error occurred while retrieving the password from the database. </exception>
+        /// <exception cref="T:System.NotSupportedException"><see cref="P:System.Web.Security.SqlMembershipProvider.EnablePasswordReset"></see> 
+        /// is set to false. </exception>
+        /// <exception cref="T:System.ArgumentException">username is an empty string (""), contains a comma, or is longer than 256 characters.
+        /// - or -passwordAnswer is an empty string or is longer than 128 characters and 
+        /// <see cref="P:System.Web.Security.SqlMembershipProvider.RequiresQuestionAndAnswer"></see> is true.- or -passwordAnswer is longer 
+        /// than 128 characters after encoding.</exception>
+        /// <exception cref="T:System.ArgumentNullException">username is null.- or -passwordAnswer is null and 
+        /// <see cref="P:System.Web.Security.SqlMembershipProvider.RequiresQuestionAndAnswer"></see> is true.</exception>
+        /// <exception cref="T:System.Web.Security.MembershipPasswordException">passwordAnswer is invalid. - or -The user account is currently locked out.</exception>
         public override string ResetPassword(string username, string answer)
         {
-			if (!this.EnablePasswordReset)
-			{
+            if (!this.EnablePasswordReset)
+            {
                 throw new NotSupportedException(Resources.Not_configured_to_support_password_resets);
-			}
+            }
 
             User user = GetUserByName(username, "ResetPassword");
             if (null == user)
@@ -1022,7 +1008,7 @@ namespace MongoProviders
             }
 
 
-            if (RequiresQuestionAndAnswer && 
+            if (RequiresQuestionAndAnswer &&
                 (null == answer || !ComparePasswords(answer, user.PasswordAnswer, user.PasswordSalt, user.PasswordFormat)))
             {
                 UpdateFailureCount(user, "passwordAnswer", false);
@@ -1030,7 +1016,7 @@ namespace MongoProviders
                 throw new MembershipPasswordException(Resources.Membership_InvalidAnswer);
             }
 
-			string newPassword = Membership.GeneratePassword(NEW_PASSWORD_LENGTH, MinRequiredNonAlphanumericCharacters);
+            string newPassword = Membership.GeneratePassword(NEW_PASSWORD_LENGTH, MinRequiredNonAlphanumericCharacters);
 
             ValidatePasswordEventArgs args =
               new ValidatePasswordEventArgs(username, newPassword, true);
@@ -1054,11 +1040,11 @@ namespace MongoProviders
             return newPassword;
         }
 
-		/// <summary>
-		/// Unlocks the user.
-		/// </summary>
-		/// <param name="username">The username.</param>
-		/// <returns>Returns true if user was unlocked; otherwise returns false.</returns>
+        /// <summary>
+        /// Unlocks the user.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <returns>Returns true if user was unlocked; otherwise returns false.</returns>
         public override bool UnlockUser(string username)
         {
             User user = GetUserByName(username, "UnlockUser");
@@ -1069,7 +1055,7 @@ namespace MongoProviders
 
             user.IsLockedOut = false;
             user.LastLockedOutDate = DateTime.MinValue;
-            user.FailedPasswordAnswerAttemptCount = 0; 
+            user.FailedPasswordAnswerAttemptCount = 0;
             user.FailedPasswordAnswerAttemptWindowStart = DateTime.MinValue;
             user.FailedPasswordAttemptCount = 0;
             user.FailedPasswordAttemptWindowStart = DateTime.MinValue;
@@ -1079,10 +1065,10 @@ namespace MongoProviders
             return true;
         }
 
-		/// <summary>
-		/// Updates information about a user in the data source.
-		/// </summary>
-		/// <param name="user">A <see cref="T:System.Web.Security.MembershipUser"/> object that represents the user to update and the updated information for the user.</param>
+        /// <summary>
+        /// Updates information about a user in the data source.
+        /// </summary>
+        /// <param name="user">A <see cref="T:System.Web.Security.MembershipUser"/> object that represents the user to update and the updated information for the user.</param>
         public override void UpdateUser(MembershipUser user)
         {
             User u = GetUserByName(user.UserName, "UpdateUser");
@@ -1103,20 +1089,20 @@ namespace MongoProviders
             }
         }
 
-		/// <summary>
-		/// Verifies that the specified user name and password exist in the data source.
-		/// </summary>
-		/// <param name="username">The name of the user to validate.</param>
-		/// <param name="password">The password for the specified user.</param>
-		/// <returns>
-		/// true if the specified username and password are valid; otherwise, false.
-		/// </returns>
+        /// <summary>
+        /// Verifies that the specified user name and password exist in the data source.
+        /// </summary>
+        /// <param name="username">The name of the user to validate.</param>
+        /// <param name="password">The password for the specified user.</param>
+        /// <returns>
+        /// true if the specified username and password are valid; otherwise, false.
+        /// </returns>
         public override bool ValidateUser(string username, string password)
         {
-			if (!SecUtility.ValidateParameter(ref username, true, true, InvalidUsernameCharacters, MAX_USERNAME_LENGTH) || !SecUtility.ValidateParameter(ref password, true, true, null, MAX_PASSWORD_LENGTH))
-			{
-				return false;
-			}
+            if (!SecUtility.ValidateParameter(ref username, true, true, InvalidUsernameCharacters, MAX_USERNAME_LENGTH) || !SecUtility.ValidateParameter(ref password, true, true, null, MAX_PASSWORD_LENGTH))
+            {
+                return false;
+            }
 
             User user = GetUserByName(username, "ValidateUser");
             if (null == user || user.IsLockedOut || !user.IsApproved)
@@ -1153,42 +1139,44 @@ namespace MongoProviders
         #region Protected Methods
 
         protected void ValidatePwdStrengthRegularExpression()
-		{
-			// Validate regular expression, if supplied.
-			if (null == _passwordStrengthRegularExpression)
-				_passwordStrengthRegularExpression = String.Empty;
+        {
+            // Validate regular expression, if supplied.
+            if (null == _passwordStrengthRegularExpression)
+                _passwordStrengthRegularExpression = String.Empty;
 
-			_passwordStrengthRegularExpression = _passwordStrengthRegularExpression.Trim();
-			if (_passwordStrengthRegularExpression.Length > 0)
-			{
-				try
-				{
-					new Regex(_passwordStrengthRegularExpression);
-				}
-				catch (ArgumentException ex)
-				{
-					throw new ProviderException(ex.Message, ex);
-				}
-			}
-		}
+            _passwordStrengthRegularExpression = _passwordStrengthRegularExpression.Trim();
 
-		protected MembershipUser ToMembershipUser(User user) {
-			if (null == user)
-				return null;
+            if (_passwordStrengthRegularExpression.Length <= 0) 
+                return;
 
-			return new MembershipUser(this.Name, user.Username, user.Id, user.Email,
-				user.PasswordQuestion, user.Comment, user.IsApproved, user.IsLockedOut,
-				user.CreateDate, user.LastLoginDate, user.LastActivityDate, user.LastPasswordChangedDate,
-				user.LastLockedOutDate
-			);
-		}
+            try
+            {
+                new Regex(_passwordStrengthRegularExpression);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ProviderException(ex.Message, ex);
+            }
+        }
 
-		protected static string GenerateSalt()
-		{
-			byte[] data = new byte[0x10];
-			new RNGCryptoServiceProvider().GetBytes(data);
-			return Convert.ToBase64String(data);
-		}
+        protected MembershipUser ToMembershipUser(User user)
+        {
+            if (null == user)
+                return null;
+
+            return new MembershipUser(this.Name, user.Username, user.Id, user.Email,
+                user.PasswordQuestion, user.Comment, user.IsApproved, user.IsLockedOut,
+                user.CreateDate, user.LastLoginDate, user.LastActivityDate, user.LastPasswordChangedDate,
+                user.LastLockedOutDate
+            );
+        }
+
+        protected static string GenerateSalt()
+        {
+            byte[] data = new byte[0x10];
+            new RNGCryptoServiceProvider().GetBytes(data);
+            return Convert.ToBase64String(data);
+        }
 
 
         /// <summary>
@@ -1206,10 +1194,12 @@ namespace MongoProviders
 
             User user = null;
 
-            try {
-                user = Collection.AsQueryable().Where(u => u.LowercaseUsername == username.ToLowerInvariant()).SingleOrDefault();
+            try
+            {
+                user = Collection.AsQueryable().SingleOrDefault(u => u.LowercaseUsername == username.ToLowerInvariant());
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 var msg = String.Format("Unable to retrieve User information for user '{0}'", username);
                 HandleDataExceptionAndThrow(new ProviderException(msg, ex), action);
             }
@@ -1240,7 +1230,7 @@ namespace MongoProviders
             var cursor = Collection.Find(query);
             cursor.SetSkip(pageIndex * pageSize);
             cursor.SetLimit(pageSize);
-            
+
             foreach (var user in cursor)
             {
                 users.Add(ToMembershipUser(user));
@@ -1255,21 +1245,21 @@ namespace MongoProviders
 
 
 
-		protected bool CheckPassword(User user, string password, bool failIfNotApproved)
-		{
+        protected bool CheckPassword(User user, string password, bool failIfNotApproved)
+        {
             if (null == user) return false;
-			if (!user.IsApproved && failIfNotApproved) return false;
+            if (!user.IsApproved && failIfNotApproved) return false;
 
-			string encodedPwdFromUser = EncodePassword(password, user.PasswordFormat, user.PasswordSalt);
-			bool isAuthenticated = user.Password.Equals(encodedPwdFromUser);
+            string encodedPwdFromUser = EncodePassword(password, user.PasswordFormat, user.PasswordSalt);
+            bool isAuthenticated = user.Password.Equals(encodedPwdFromUser);
 
-			if ((isAuthenticated && (user.FailedPasswordAttemptCount == 0)) && (user.FailedPasswordAnswerAttemptCount == 0))
-				return true;
+            if ((isAuthenticated && (user.FailedPasswordAttemptCount == 0)) && (user.FailedPasswordAnswerAttemptCount == 0))
+                return true;
 
-			UpdateFailureCount(user, "password", isAuthenticated);
+            UpdateFailureCount(user, "password", isAuthenticated);
 
-			return isAuthenticated;
-		}
+            return isAuthenticated;
+        }
 
 
 
@@ -1279,7 +1269,7 @@ namespace MongoProviders
         /// <param name="username"></param>
         /// <param name="failureType"></param>
         /// <param name="isAuthenticated"></param>
-		protected void UpdateFailureCount(User user, string failureType, bool isAuthenticated)
+        protected void UpdateFailureCount(User user, string failureType, bool isAuthenticated)
         {
             if (!((failureType == "password") || (failureType == "passwordAnswer")))
             {
@@ -1312,15 +1302,19 @@ namespace MongoProviders
 
             DateTime windowStart = DateTime.MinValue;
             int failureCount = 0;
-            if (failureType == "password")
+
+            switch (failureType)
             {
-                windowStart = user.FailedPasswordAttemptWindowStart;
-                failureCount = user.FailedPasswordAttemptCount;
-            }
-            else if (failureType == "passwordAnswer")
-            {
-                windowStart = user.FailedPasswordAnswerAttemptWindowStart;
-                failureCount = user.FailedPasswordAnswerAttemptCount;
+                case "password":
+                    windowStart = user.FailedPasswordAttemptWindowStart;
+                    failureCount = user.FailedPasswordAttemptCount;
+                    break;
+                case "passwordAnswer":
+                    windowStart = user.FailedPasswordAnswerAttemptWindowStart;
+                    failureCount = user.FailedPasswordAnswerAttemptCount;
+                    break;
+                default:
+                    break;
             }
 
             DateTime windowEnd = windowStart.AddMinutes(PasswordAttemptWindow);
@@ -1330,15 +1324,16 @@ namespace MongoProviders
                 // First password failure or outside of PasswordAttemptWindow. 
                 // Start a new password failure count from 1 and a new window starting now.
 
-                if (failureType == "password")
+                switch (failureType)
                 {
-                    user.FailedPasswordAttemptCount = 1;
-                    user.FailedPasswordAttemptWindowStart = DateTime.UtcNow;
-                }
-                else if (failureType == "passwordAnswer")
-                {
-                    user.FailedPasswordAnswerAttemptCount = 1;
-                    user.FailedPasswordAnswerAttemptWindowStart = DateTime.UtcNow;
+                    case "password":
+                        user.FailedPasswordAttemptCount = 1;
+                        user.FailedPasswordAttemptWindowStart = DateTime.UtcNow;
+                        break;
+                    case "passwordAnswer":
+                        user.FailedPasswordAnswerAttemptCount = 1;
+                        user.FailedPasswordAnswerAttemptWindowStart = DateTime.UtcNow;
+                        break;
                 }
 
                 var msg = String.Format("Unable to update failure count and window start for user '{0}'", user.Username);
@@ -1369,118 +1364,103 @@ namespace MongoProviders
             // Password attempts have not exceeded the failure threshold. Update
             // the failure counts. Leave the window the same.
 
-            if (failureType == "password")
+            switch (failureType)
             {
-                user.FailedPasswordAttemptCount = failureCount;
-            }
-            else if (failureType == "passwordAnswer")
-            {
-                user.FailedPasswordAnswerAttemptCount = failureCount;
+                case "password":
+                    user.FailedPasswordAttemptCount = failureCount;
+                    break;
+                case "passwordAnswer":
+                    user.FailedPasswordAnswerAttemptCount = failureCount;
+                    break;
             }
 
             {
                 var msg = String.Format("Unable to update failure count for user '{0}'", user.Username);
                 Save(user, msg, "UpdateFailureCount");
             }
-
-            return;
-
         }
 
-		protected bool ComparePasswords(string password, string dbpassword, string salt, MembershipPasswordFormat passwordFormat)
-		{
-			//   Compares password values based on the MembershipPasswordFormat.
-			string pass1 = password;
-			string pass2 = dbpassword;
+        protected bool ComparePasswords(string password, string dbpassword, string salt, MembershipPasswordFormat passwordFormat)
+        {
+            //   Compares password values based on the MembershipPasswordFormat.
+            string pass1 = password;
+            string pass2 = dbpassword;
 
-			switch (passwordFormat)
-			{
-				case MembershipPasswordFormat.Encrypted:
-					pass2 = UnEncodePassword(dbpassword, passwordFormat);
-					break;
-				case MembershipPasswordFormat.Hashed:
-					pass1 = EncodePassword(password, passwordFormat, salt);
-					break;
-				default:
-					break;
-			}
+            switch (passwordFormat)
+            {
+                case MembershipPasswordFormat.Encrypted:
+                    pass2 = UnEncodePassword(dbpassword, passwordFormat);
+                    break;
+                case MembershipPasswordFormat.Hashed:
+                    pass1 = EncodePassword(password, passwordFormat, salt);
+                    break;
+                default:
+                    break;
+            }
 
-			if (pass1 == pass2)
-			{
-				return true;
-			}
+            return pass1 == pass2;
+        }
 
-			return false;
-		}
+        protected string EncodePassword(string password, MembershipPasswordFormat passwordFormat, string salt)
+        {
+            //   Encrypts, Hashes, or leaves the password clear based on the PasswordFormat.
+            if (String.IsNullOrEmpty(password))
+                return password;
 
-		protected string EncodePassword(string password, MembershipPasswordFormat passwordFormat, string salt)
-		{
-			//   Encrypts, Hashes, or leaves the password clear based on the PasswordFormat.
-			if (String.IsNullOrEmpty(password))
-				return password;
+            byte[] bytes = Encoding.Unicode.GetBytes(password);
+            byte[] src = Convert.FromBase64String(salt);
+            byte[] dst = new byte[src.Length + bytes.Length];
+            byte[] inArray;
 
-			byte[] bytes = Encoding.Unicode.GetBytes(password);
-			byte[] src = Convert.FromBase64String(salt);
-			byte[] dst = new byte[src.Length + bytes.Length];
-			byte[] inArray;
+            Buffer.BlockCopy(src, 0, dst, 0, src.Length);
+            Buffer.BlockCopy(bytes, 0, dst, src.Length, bytes.Length);
 
-			Buffer.BlockCopy(src, 0, dst, 0, src.Length);
-			Buffer.BlockCopy(bytes, 0, dst, src.Length, bytes.Length);
-
-			switch (passwordFormat)
-			{
-				case MembershipPasswordFormat.Clear:
-					return password;
-				case MembershipPasswordFormat.Encrypted:
-					inArray = EncryptPassword(dst);
-					break;
-				case MembershipPasswordFormat.Hashed:
-					HashAlgorithm algorithm = HashAlgorithm.Create(Membership.HashAlgorithmType);
-					if (null == algorithm)
-					{
-						throw new ProviderException(String.Format(
-                            Resources.Provider_unrecognized_hash_algorithm, 
+            switch (passwordFormat)
+            {
+                case MembershipPasswordFormat.Clear:
+                    return password;
+                case MembershipPasswordFormat.Encrypted:
+                    inArray = EncryptPassword(dst);
+                    break;
+                case MembershipPasswordFormat.Hashed:
+                    HashAlgorithm algorithm = HashAlgorithm.Create(Membership.HashAlgorithmType);
+                    if (null == algorithm)
+                    {
+                        throw new ProviderException(String.Format(
+                            Resources.Provider_unrecognized_hash_algorithm,
                             Membership.HashAlgorithmType));
-					}
-					inArray = algorithm.ComputeHash(dst);
+                    }
+                    inArray = algorithm.ComputeHash(dst);
 
-					break;
-				default:
-					throw new ProviderException("Unsupported password format.");
-			}
+                    break;
+                default:
+                    throw new ProviderException("Unsupported password format.");
+            }
 
-			return Convert.ToBase64String(inArray);
-		}
+            return Convert.ToBase64String(inArray);
+        }
 
-		protected string UnEncodePassword(string encodedPassword, MembershipPasswordFormat passwordFormat)
-		{
-			//   Decrypts or leaves the password clear based on the PasswordFormat.
-			string password = encodedPassword;
+        protected string UnEncodePassword(string encodedPassword, MembershipPasswordFormat passwordFormat)
+        {
+            //   Decrypts or leaves the password clear based on the PasswordFormat.
+            string password = encodedPassword;
 
-			switch (passwordFormat)
-			{
-				case MembershipPasswordFormat.Clear:
-					break;
-				case MembershipPasswordFormat.Encrypted:
-					byte[] bytes = base.DecryptPassword(Convert.FromBase64String(password));
-					if (null == bytes)
-					{
-						password = null;
-					}
-					else
-					{
-                        // strip off salt
-						password = Encoding.Unicode.GetString(bytes, 0x10, bytes.Length - 0x10);
-					}
-					break;
-				case MembershipPasswordFormat.Hashed:
+            switch (passwordFormat)
+            {
+                case MembershipPasswordFormat.Clear:
+                    break;
+                case MembershipPasswordFormat.Encrypted:
+                    byte[] bytes = base.DecryptPassword(Convert.FromBase64String(password));
+                    password = null == bytes ? null : Encoding.Unicode.GetString(bytes, 0x10, bytes.Length - 0x10);
+                    break;
+                case MembershipPasswordFormat.Hashed:
                     throw new ProviderException(Resources.Provider_can_not_decode_hashed_password);
-				default:
-					throw new ProviderException("Unsupported password format.");
-			}
+                default:
+                    throw new ProviderException("Unsupported password format.");
+            }
 
-			return password;
-		}
+            return password;
+        }
 
         protected void HandleDataExceptionAndThrow(Exception ex, string action)
         {
@@ -1506,15 +1486,13 @@ namespace MongoProviders
         /// <param name="action"></param>
         protected void WriteToEventLog(Exception ex, string action)
         {
-          EventLog log = new EventLog();
-          log.Source = _eventSource;
-          log.Log = _eventLog;
-    
-          string message = "An exception occurred communicating with the data source.\n\n";
-          message += "Action: " + action + "\n\n";
-          message += "Exception: " + ex.ToString();
-    
-          log.WriteEntry(message);
+            EventLog log = new EventLog { Source = _eventSource, Log = _eventLog };
+
+            string message = "An exception occurred communicating with the data source.\n\n";
+            message += "Action: " + action + "\n\n";
+            message += "Exception: " + ex.ToString();
+
+            log.WriteEntry(message);
         }
 
         /// <summary>
@@ -1525,12 +1503,14 @@ namespace MongoProviders
         /// <param name="action">The name of the action which attempted the save (ex. "CreateUser"). Used in case exceptions are written to EventLog.</param>
         protected void Save(User user, string failureMessage, string action)
         {
-            SafeModeResult result = null;
-            try {
+            WriteConcernResult result = null;
+            try
+            {
                 var users = Collection;
-                result = users.Save(user, SafeMode.True);
+                result = users.Save(user, WriteConcern.Acknowledged);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 HandleDataExceptionAndThrow(new ProviderException(failureMessage, ex), action);
             }
             if (null == result)
