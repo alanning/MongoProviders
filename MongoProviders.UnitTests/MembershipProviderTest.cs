@@ -35,6 +35,9 @@ using System.Linq;
 using System.Configuration.Provider;
 using MongoDB.Driver.Builders;
 using MongoDB.Bson.Serialization;
+using MongoDB.Driver;
+using IAsyncCursorExtensions = MongoDB.Driver.IAsyncCursorExtensions;
+using IMongoCollectionExtensions = MongoDB.Driver.IMongoCollectionExtensions;
 
 namespace MongoProviders.UnitTests
 {
@@ -65,7 +68,10 @@ namespace MongoProviders.UnitTests
             Assert.AreEqual(MembershipCreateStatus.Success, status);
 
             // verify that the password format was saved
-            var user = _db.GetCollection<User>(provider.CollectionName).FindOne(Query.EQ(provider.ElementNames.LowercaseUsername, "foo"));
+            var filter = new MongoDB.Driver.FilterDefinitionBuilder<User>();
+            
+            var user = IAsyncCursorExtensions.First(_db.GetCollection<User>(provider.CollectionName).FindSync<User>(filter.Eq(provider.ElementNames.LowercaseUsername, "foo")));
+            
             MembershipPasswordFormat rowFormat = user.PasswordFormat;
             Assert.AreEqual(format, rowFormat);
 
@@ -256,7 +262,7 @@ namespace MongoProviders.UnitTests
         {
             CreateUserWithHashedPassword();
             Assert.IsTrue(provider.DeleteUser("foo", true));
-            var count = _db.GetCollection<User>(provider.CollectionName).Count();
+            var count = IMongoCollectionExtensions.AsQueryable(_db.GetCollection<User>(provider.CollectionName)).Count();
             Assert.AreEqual(0, count);
 
             provider = new MembershipProvider();
@@ -265,7 +271,7 @@ namespace MongoProviders.UnitTests
             // in Mongo, all associated data is stored in same document so 
             // passing true or false to DeleteUser will be the same.
             Assert.IsTrue(provider.DeleteUser("foo", deleteAllRelatedData: true));
-            count = _db.GetCollection<User>(provider.CollectionName).Count();
+            count = _db.GetCollection<User>(provider.CollectionName).AsQueryable().Count();
             Assert.AreEqual(0, count);
             //Assert.IsTrue(Membership.DeleteUser("foo", false));
             //table = FillTable("SELECT * FROM my_aspnet_Membership");
@@ -856,13 +862,14 @@ namespace MongoProviders.UnitTests
             var mongoProvider = (MongoProviders.MembershipProvider)Membership.Provider;
             var profiles = mongoProvider.Database.GetCollection<Profile>(mongoProvider.CollectionName);
 
-            var profile = profiles.FindOne(Query.EQ("lname", "foo"));
+            var profile = profiles.AsQueryable().First(u=>u.LowercaseUsername == "foo");
             profile.FirstName = "Neo";
 
-            profiles.Save(profile);
+            FilterDefinitionBuilder<Profile> fb = new FilterDefinitionBuilder<Profile>();
+            profiles.ReplaceOne(fb.Eq(p=>p.Id, profile.Id), profile);
 
             // ensure profile saved correctly
-            profile = profiles.FindOne(Query.EQ("lname", "foo"));
+            profile = profiles.Find(fb.Eq(p=>p.LowercaseUsername, "foo")).First();
             Assert.AreEqual("Neo", profile.FirstName);
             Assert.AreEqual("question", profile.PasswordQuestion);
 
@@ -871,7 +878,7 @@ namespace MongoProviders.UnitTests
             Assert.AreEqual(true, valid);
             
             // ensure profile fields still in database
-            profile = profiles.FindOne(Query.EQ("lname", "foo"));
+            profile = profiles.Find(fb.Eq(p => p.LowercaseUsername, "foo")).First();
             Assert.AreEqual("Neo", profile.FirstName);
             Assert.AreEqual("question", profile.PasswordQuestion);
 
@@ -879,7 +886,7 @@ namespace MongoProviders.UnitTests
             user.ChangePassword("bar!bar","foo!foo");
             
             // ensure profile fields still in database
-            profile = profiles.FindOne(Query.EQ("lname", "foo"));
+            profile = profiles.Find(fb.Eq(p => p.LowercaseUsername, "foo")).First();
             Assert.AreEqual("Neo", profile.FirstName);
             Assert.AreEqual("question", profile.PasswordQuestion);
         }

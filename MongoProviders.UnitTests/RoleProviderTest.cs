@@ -34,6 +34,8 @@ using System.Web.Security;
 using System.Collections.Specialized;
 using System.Configuration.Provider;
 using System.Collections.Generic;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using MongoProviders;
 
@@ -394,11 +396,13 @@ namespace MongoProviders.UnitTests
             roleProvider.AddUsersToRoles(new string[] { "emily", "robert", "carly" },
                 new string[] { "Editor" });
 
-            var cursor = _db.GetCollection(roleProvider.UserCollectionName).Find(Query.EQ("roles", "editor"));
-            cursor.SetFields(Fields.Include("lname").Exclude("_id"));
+            var fb = new FilterDefinitionBuilder<BsonDocument>();
+
+            var cursor = _db.GetCollection<BsonDocument>(roleProvider.UserCollectionName).Find(fb.Eq("roles", "editor"));
+            // cursor.SetFields(Fields.Include("lname").Exclude("_id"));
 
             var names = new List<string>();
-            foreach (var doc in cursor)
+            foreach (var doc in cursor.ToEnumerable())
             {
                 var str = doc["lname"].AsString;
                 names.Add(str);

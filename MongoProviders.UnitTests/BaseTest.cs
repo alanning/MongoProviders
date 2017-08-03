@@ -15,11 +15,11 @@ namespace MongoProviders.UnitTests
     public class BaseTest
     {
 
-        protected MongoDatabase _db;
+        protected IMongoDatabase _db;
         protected string _connStrName;
         protected string _applicationName;
-        protected MongoCollection<User> _userCollection;
-        protected MongoCollection<BsonDocument> _roleCollection;
+        protected IMongoCollection<User> _userCollection;
+        protected IMongoCollection<BsonDocument> _roleCollection;
         protected const string _appName2 = "/myapp";
         protected const string Membership_missing_application_name = "App.Config system.web/membership section is missing an applicationName attribute.  This is required so all tests point to the same data collection.";
         protected const string Roles_missing_application_name = "App.Config system.web/roleManager section is missing an applicationName attribute.  This is required so all tests point to the same data collection.";
