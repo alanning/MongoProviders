@@ -13,11 +13,11 @@ namespace MongoProviders
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
         /// <returns></returns>
-        internal static MongoDatabase GetMongoConnection(String connectionString)
+        internal static IMongoDatabase GetMongoConnection(String connectionString)
         {
             UserClassMap.Register();
             var mongoUrl = MongoUrl.Create(connectionString);
-            var server = new MongoClient(connectionString).GetServer();
+            var server = new MongoClient(connectionString);
             return server.GetDatabase(mongoUrl.DatabaseName);
         }
     }

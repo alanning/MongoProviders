@@ -36,6 +36,7 @@ using System.Configuration.Provider;
 using MongoDB.Driver.Builders;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using IAsyncCursorExtensions = MongoDB.Driver.IAsyncCursorExtensions;
 using IMongoCollectionExtensions = MongoDB.Driver.IMongoCollectionExtensions;
 
@@ -859,7 +860,7 @@ namespace MongoProviders.UnitTests
 
 
             // save Profile over User
-            var mongoProvider = (MongoProviders.MembershipProvider)Membership.Provider;
+            var mongoProvider = (MembershipProvider)Membership.Provider;
             var profiles = mongoProvider.Database.GetCollection<Profile>(mongoProvider.CollectionName);
 
             var profile = profiles.AsQueryable().First(u=>u.LowercaseUsername == "foo");

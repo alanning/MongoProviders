@@ -101,23 +101,11 @@ namespace MongoProviders
             }
         }
 
-        public MongoCollection<BsonDocument> RoleCollection
-        {
-            get
-            {
-                return Database.GetCollection(_roleCollectionName);
-            }
-        }
+        public IMongoCollection<BsonDocument> RoleCollection => Database.GetCollection<BsonDocument>(_roleCollectionName);
 
-        public MongoCollection<User> UserCollection
-        {
-            get
-            {
-                return Database.GetCollection<User>(_userCollectionName);
-            }
-        }
+        public IMongoCollection<User> UserCollection => Database.GetCollection<User>(_userCollectionName);
 
-		/// <summary>
+        /// <summary>
 		/// The name of the application using the custom membership provider.
 		/// </summary>
 		/// <value></value>
@@ -154,7 +142,7 @@ namespace MongoProviders
         protected string _userCollectionName;
         protected string _roleCollectionName;
 
-        protected MongoDatabase Database;
+        protected IMongoDatabase Database;
 
         protected string _applicationName;
         protected string _invalidUsernameCharacters;
@@ -180,8 +168,8 @@ namespace MongoProviders
         {
             get
             {
-                var docs = RoleCollection.FindAll();
-                var ids = docs.Select(d => d[DOCUMENT_ID_NAME].AsString);
+                var docs = RoleCollection.Find(Builders<BsonDocument>.Filter.Empty);
+                var ids = docs.ToEnumerable().Select(d => d[DOCUMENT_ID_NAME].AsString);
                 return ids;
             }
         }
@@ -264,8 +252,8 @@ namespace MongoProviders
             // ensure indexes
 
             // MongoDB automatically indexes the _id field
-            this.UserCollection.EnsureIndex(ElementNames.LowercaseUsername);
-            this.UserCollection.EnsureIndex(ElementNames.Roles);
+            //this.UserCollection.Indexes.CreateOne(Builders<User>.IndexKeys.Ascending(u=>u.LowercaseUsername));
+            //this.UserCollection.Indexes.CreateOne(Builders<User>.IndexKeys.Ascending(u=>u.Roles));
         }
 
         
@@ -292,18 +280,12 @@ namespace MongoProviders
                 CreateRole(role);
             }
 
-
             // now update all users' roles
-            var query = Query.In(ElementNames.LowercaseUsername, new BsonArray(users.ToArray()));
+            var query = Builders<User>.Filter.In(ElementNames.LowercaseUsername, new BsonArray(users.ToArray()));
 
-            var update = Update.AddToSetEachWrapped<string>(ElementNames.Roles, roles);
+            var update = Builders<User>.Update.AddToSetEach<string>(ElementNames.Roles, roles);
 
-            var result = UserCollection.Update(query, update, UpdateFlags.Multi, SafeMode.True);
-
-            if (result.HasLastErrorMessage)
-            {
-                throw new ProviderException(result.LastErrorMessage);
-            }
+            var result = UserCollection.UpdateMany(query, update);
         }
 
         public override void CreateRole(string roleName)
@@ -313,13 +295,7 @@ namespace MongoProviders
             var doc = new BsonDocument();
             doc.Set(DOCUMENT_ID_NAME, roleName.ToLowerInvariant());
 
-            
-            var result = RoleCollection.Save(doc, WriteConcern.Acknowledged);
-
-            if (!result.Ok)
-            {
-                throw new ProviderException(String.Format("Could not create role '{0}'. Reason: {1}", roleName, result.LastErrorMessage));
-            }
+            RoleCollection.ReplaceOne(Builders<BsonDocument>.Filter.Eq("_id", roleName.ToLowerInvariant()), doc, new UpdateOptions{IsUpsert = true});
         }
 
         public override bool DeleteRole(string roleName, bool throwOnPopulatedRole)
@@ -332,8 +308,8 @@ namespace MongoProviders
                 throw new ProviderException(Resources.Role_is_not_empty);
             }
 
-            var result = RoleCollection.Remove(Query.EQ(DOCUMENT_ID_NAME, roleName.ToLowerInvariant()), WriteConcern.Acknowledged);
-            return result.Ok;
+            var result = RoleCollection.DeleteOne(Builders<BsonDocument>.Filter.Eq(DOCUMENT_ID_NAME, roleName.ToLowerInvariant()));
+            return result.IsAcknowledged;
         }
 
         public override string[] FindUsersInRole(string roleName, string usernameToMatch)
@@ -346,16 +322,13 @@ namespace MongoProviders
 
             var username = ElementNames.LowercaseUsername;
             var userQuery = Helper.FindQuery(usernameToMatch.ToLowerInvariant(), username);
-            var query = Query.And(
-                Query.EQ(ElementNames.Roles, roleName.ToLowerInvariant()),
-                userQuery
+            var query = Builders<User>.Filter.And(
+                Builders<User>.Filter.Eq(ElementNames.Roles, roleName.ToLowerInvariant()),
+                userQuery.ToBsonDocument()
                 );
-            var cursor = UserCollection.FindAs<BsonDocument>(query);
+            var cursor = UserCollection.FindSync<User>(query);
 
-            // only want the usernames
-            cursor.SetFields(Fields.Include(username).Exclude(DOCUMENT_ID_NAME));
-
-            return cursor.Select(doc => doc[username].AsString).ToArray();
+            return cursor.ToEnumerable().Select(doc => doc.Username).ToArray();
         }
 
 
@@ -370,9 +343,12 @@ namespace MongoProviders
 
             var roles = UserCollection.AsQueryable()
                 .Where(u => u.LowercaseUsername == username.ToLowerInvariant())
-                .Select(u => u.Roles.ToArray()).FirstOrDefault();
+                .Select(u => u.Roles).FirstOrDefault();
 
-            return roles;
+            if(roles == null)
+                return new string[]{};
+
+            return roles.ToArray();
         }
 
         public override string[] GetUsersInRole(string roleName)
@@ -403,17 +379,10 @@ namespace MongoProviders
             // update all users' roles
             var roles = roleNames.Select(role => role.ToLowerInvariant()).ToList();
             var users = usernames.Select(username => username.ToLowerInvariant()).ToList();
+            var query = Builders<User>.Filter.In(ElementNames.LowercaseUsername, new BsonArray(users.ToArray()));
+            var update = Builders<User>.Update.PullAll<string>(ElementNames.Roles, roles);
 
-            var query = Query.In(ElementNames.LowercaseUsername, new BsonArray(users.ToArray()));
-
-            var update = Update.PullAllWrapped<string>(ElementNames.Roles, roles);
-
-            var result = Database.GetCollection<User>(_userCollectionName).Update(query, update, UpdateFlags.Multi, SafeMode.True);
-
-            if (result.HasLastErrorMessage)
-            {
-                throw new ProviderException(result.LastErrorMessage);
-            }
+            var result = UserCollection.UpdateMany(query, update);
         }
 
         public override bool RoleExists(string roleName)
