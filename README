@@ -3,6 +3,9 @@ MongoProviders
 ASP.NET Membership and Role Providers for MongoDB
 
 
+## NOTE: There is a newer fork of this project located here:
+https://github.com/rammicz/MongoProviders
+
 
 Motivation:
 
